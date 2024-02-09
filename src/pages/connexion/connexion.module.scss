@@ -1,0 +1,155 @@
+@import "../../assets/styles/variables";
+
+.allContainer{
+    max-width: 500px;
+    height: auto;
+    margin: auto;
+    padding: 50px 30px;
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+
+    h2{
+        font-weight: 500;
+        font-size: 28px;
+        margin: 0;
+    }
+
+    p{
+        margin: 0;
+        font-weight: 300;
+        font-size: 14px;
+        padding: 20px 0px;
+    }
+
+    input{
+        font-family: $font-family;
+        width: 100%;
+        padding: 15px;
+        margin: 8px 0px;
+        outline: none;
+        border: 1px solid $secondary-color;
+        border-radius: 10px;
+        font-size: 14px;
+        &:focus{
+            border-color: $primary-color;
+        }
+        &::placeholder{
+            color: rgb(151, 151, 151);
+        }
+    }
+
+    a{
+        text-decoration: none;
+        font-size: 14px;
+        text-align: left;
+        font-weight: 500;
+        color: $primary-color;
+    }
+
+    button{
+        font-family: $font-family;
+        margin-top: 0px;
+        font-weight: 500;
+        border: none;
+        font-size: 14px;
+        color: $text-color;
+        background-color: $primary-color;
+        border-radius: 50px;
+        padding: 15px 50px;
+        cursor: pointer;
+    }
+
+    .linkResetPassword{
+        width: 100%;
+        text-align: right;
+        padding: 5px;
+        font-weight: 400;
+    }
+
+    .callToSignup{
+        margin-bottom: 20px;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 20px;
+        a{
+            color: $primary-color;
+        }
+    }
+
+    .errorMessage{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: red;
+        text-align: center;
+        font-size: 15px;
+        color: $white-color;
+        padding: 20px 5px;
+        animation: fadin-top 300ms ease-in-out both;
+        z-index: 10;
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        
+        p{
+            padding: 0;
+            cursor: pointer;
+        }
+    }
+
+    .passwordInput{
+        position: relative;
+        input{
+            padding-right: 45px;
+        }
+
+        div{
+            position: absolute;
+            top: 24px;
+            right: 15px;
+
+            svg{
+                width: 20px;
+                height: 20px;
+                min-width: 20px;
+                min-height: 20px;
+                opacity: 0.6;
+                cursor: pointer;
+            }
+        }
+    }
+
+    @media screen and (min-width: 650px) {
+        padding-top: 100px;
+        p{
+            font-weight: 400;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        input{
+            font-size: 15px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .callToSignup{
+            font-size: 15px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+    }
+}
+
+
+@keyframes fadin-top {
+    0%{
+        transform: translateY(-50px);
+    }100%{
+        transform: translateY(0px);
+    }
+}

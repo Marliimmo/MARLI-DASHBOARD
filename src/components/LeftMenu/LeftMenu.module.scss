@@ -1,0 +1,163 @@
+@import "../../assets/styles/variables";
+
+.full_container{
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 20%;
+    color: $white-color;
+    background-color: $black-color;
+    p{
+        margin-top: -5px;
+    }
+    a{
+        color: rgb(66, 66, 66);
+    }
+
+    svg{
+        color: rgb(66, 66, 66);
+    }
+    @media screen and (max-width:799px) {
+        box-shadow: 2px -100px 100px rgba(109, 109, 109, 0.514);
+        animation: fadeInLeft ease-in-out 300ms both;
+        z-index: 999;
+    }
+    
+    @media screen and (min-width:800px) and (max-width:1200px) {
+        width: 80px;
+        .pseudoProfil{
+            display: none;
+        }
+        .menuTitle{
+            display: none;
+        }
+
+        .containerImage{
+            width: 70px !important;
+            height: 40px !important;
+            margin-top: 20px;
+            margin-right: 0 !important;
+        }
+
+        svg{
+            display: flex;
+            padding-left: 10px !important;
+            font-size: 20px !important;
+        }
+
+        .imageLogo{
+            display: none;
+        }
+    }
+}
+
+@keyframes fadeInLeft {
+    0% {
+       transform: translateX(-100%);
+    }
+    100% {
+       transform: translateX(0);
+    }
+}
+
+.imageLogo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+    color: $white-color;
+    margin: 50px 0px;
+
+    p{
+        margin: 0;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 20px;
+    }
+
+    img{
+        width: 40px;
+    }
+}
+
+
+.menuSuperieur{
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    p{
+        color: $primary-color;
+        font-size: 20px;
+    } 
+    i{
+        font-size: 35px;
+        color: $primary-color;
+    }
+}
+
+.containerLogOut{
+    position: fixed;
+    bottom: 40px;
+}
+
+.logOut_link_mobile{
+    font-size: 17px;
+    margin-bottom: 10px;
+    margin-right: 40px;
+    cursor: pointer;
+
+    a{
+        color: rgb(66, 66, 66);
+    }
+    svg{
+        margin-right: 10px;
+        font-size: 15px;
+        padding-left: 15px;
+    }
+
+    &:hover{
+        transition: all 300ms;
+        a{
+            color: $primary-color;
+        }
+        svg{
+            color: $primary-color;
+        }
+    }
+}
+
+.MiniDetailsProfil{
+    display: flex;
+    margin-bottom: 40px;
+    align-items: center;
+    .containerImage{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $black-color;
+        font-weight: 600;
+        font-size: 25px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        background-color: $primary-color;
+        margin-right: 20px;
+        overflow: hidden;
+    }
+
+    .pseudoProfil{
+        p{
+            font-size: 17px;
+            margin: 0;
+        }
+        h2{
+            font-size: 20px;
+        }
+    }
+
+    @media screen and (min-width:800px) {
+        margin-top: 60px;
+    }
+}

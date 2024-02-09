@@ -1,0 +1,106 @@
+@import "./variables";
+
+body {
+  margin: 0;
+  font-family: $font-family;
+  background-color: $font-color;
+}
+  
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: $font-family;
+}
+
+.fadinAnimation{
+  animation: fade-in 0.3s ease-in-out both;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px;
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+a{
+  text-decoration: none;
+  color: $primary-color;
+}
+
+textarea{
+  resize: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+img::before{
+  color: transparent;
+}
+
+@keyframes fade-in {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 799px) {
+  .w_sp_800{
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .w_inf_800{
+    display: none !important;
+  }
+}
+
+
+@media screen and (min-width: 650px) {
+  .w_inf_650{
+    display: none !important;
+  }
+}
+
+
+@media screen and (max-width: 649px) {
+  .w_sup_649{
+    display: none !important;
+  }
+}
+
+
+@media screen and (max-width: 1100px) {
+  .w_sup_1100{
+    display: none !important;
+  }
+}
+
+
+@media screen and (min-width: 1101px) {
+  .w_inf_1101{
+    display: none !important;
+  }
+}
+
+
+@media screen and (min-width: 1080px) {
+  .w_inf_1080{
+    display: none;
+  }
+}

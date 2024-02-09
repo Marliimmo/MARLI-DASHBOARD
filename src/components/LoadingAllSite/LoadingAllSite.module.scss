@@ -1,0 +1,62 @@
+@import "../../assets//styles//variables";
+
+.allContainer{
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: $black-color;
+    z-index: 9999;
+    animation: animationAffichage 3s ease both;
+
+    .logo{
+        margin: 0;
+        img{
+            width: 250px;
+            animation: animationOpacity 2s ease both;
+        }
+    }
+
+    .loadingPoint{
+        margin: 0;
+        margin-top: 15px;
+        opacity: 0.9;
+        img{
+            width: 100px;
+        }
+    }
+
+}
+
+
+@keyframes animationAffichage{
+    0%{
+        visibility: inherit;
+    }100%{
+        visibility: hidden;
+    }
+}
+
+@keyframes animationOpacity{
+    0%{
+        opacity: 0.7;
+    }
+    10%{
+        opacity: 0.8;
+    }
+    50%{
+        opacity: 0.6;
+    }
+    80%{
+        opacity: 0.9;
+    }
+    100%{
+        opacity: 1;
+    }
+}
