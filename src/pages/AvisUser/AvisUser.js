@@ -55,7 +55,7 @@ function AvisUser() {
   }, [reload])
 
   return (
-    <>
+    <div className={styles.allContainer}>
       <h2 className='titlePage'>Tous les avis client</h2>
       <div className={styles.cardContainer}>
         {reviews.map((review, index) => (
@@ -78,7 +78,7 @@ function AvisUser() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   )
 }
 

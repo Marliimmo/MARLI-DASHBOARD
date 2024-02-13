@@ -7,6 +7,7 @@ import Connexion from './pages/connexion/connexion'
 import CreateBien from './pages/CreerUnBien/CreerUnBien'
 import ModifierUnBien from './pages/ModifierUnBien/ModifierUnBien'
 import AvisUser from './pages/AvisUser/AvisUser'
+import AvisDrecherche from './pages/AvisDrecherche/AvisDrecherche'
 
 // middlewares de vérification
 import AuthRequired from './middlewares/AuthRequired/AuthRequired'
@@ -54,6 +55,14 @@ export const router = createBrowserRouter([
         element: (
           <AuthRequired>
             <AvisUser />
+          </AuthRequired>
+        ),
+      },
+      {
+        path: '/dashboard/avis-de-recherche',
+        element: (
+          <AuthRequired>
+            <AvisDrecherche />
           </AuthRequired>
         ),
       },
