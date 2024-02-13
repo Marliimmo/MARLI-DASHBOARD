@@ -8,29 +8,36 @@
     gap: 20px;
     padding: 5px;
     cursor: pointer;
+    animation: fadin-botom 1s ease-in-out both;
 
     .imageContainer{
         position: relative;
-        width: 500px;
+        max-width: 500px;
         height: 250px;
         background-color: gray;
         border-top-left-radius: 10px;
         border-bottom-left-radius: 12px;
+        flex: 1 0 40%;
 
         img{
-            width: 500px;
+            width: 100%;
             height: 250px;
             object-fit: cover;
             border-top-left-radius: 10px;
             border-bottom-left-radius: 12px;
             filter: grayscale(1);
+
+            &::before{
+                color: transparent;
+            }
         }
 
-        .statusBien{
+        .statusBienVendu, .statusSousCompromis{
             position: absolute;
             top: 10px;
             left: 10px;
             color: $white-color;
+            background-color: $gray-color;
             padding: 10px 25px;
             border-radius: 100px;
             text-transform: uppercase;
@@ -44,6 +51,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        flex: 1;
         .partialCarteristique{
             width: 100%;
             display: flex;
@@ -100,13 +108,25 @@
             img{
                 filter: grayscale(0);
             }
+
+            .statusBienVendu{
+                background: red;
+                transform: all 200ms;
+            }
+
+            .statusSousCompromis{
+                background-color: orange;
+                transform: all 200ms;
+            }
         }
     }
 
     @media screen and (max-width: 899px) {
         flex-direction: column;
         .imageContainer{
+            max-width: initial;
             width: 100%;
+            flex: auto;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             border-bottom-left-radius: 0px;
@@ -121,5 +141,16 @@
         .prix{
             margin-top: 25px;
         }
+    }
+}
+
+@keyframes fadin-botom {
+    0%{
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100%{
+        transform: translateY(0px);
+        opacity: 1;
     }
 }
