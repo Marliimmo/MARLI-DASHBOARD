@@ -6,6 +6,8 @@ import {
   faChartSimple,
   faHome,
   faRightFromBracket,
+  faSearch,
+  faStar,
 } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 import Cookies from 'js-cookie'
@@ -70,6 +72,30 @@ function LeftMenu() {
               <div>
                 <FontAwesomeIcon icon={faHome} />
                 <span className={styles.menuTitle}>Tous les biens</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? `link_active` : 'link_menu'
+              }
+              to='/dashboard/avis-de-recherche/'
+            >
+              <div>
+                <FontAwesomeIcon icon={faSearch} />
+                <span className={styles.menuTitle}>Avis de recherche</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? `link_active` : 'link_menu'
+              }
+              to='/dashboard/avis-client/'
+            >
+              <div>
+                <FontAwesomeIcon icon={faStar} />
+                <span className={styles.menuTitle}>Avis clients</span>
               </div>
             </NavLink>
 

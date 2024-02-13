@@ -297,3 +297,59 @@ margin: 20px;
         }
     }
 }
+
+._1star{
+    svg{
+        &:nth-child(1){
+            color: orange;
+        }
+    }
+}
+
+._2star{
+    svg{
+        &:nth-child(1){
+            color: orange;
+        }
+        &:nth-child(2){
+            color: orange;
+        }
+    }
+}
+
+._3star{
+    svg{
+        &:nth-child(1){
+            color: orange;
+        }
+        &:nth-child(2){
+            color: orange;
+        }
+        &:nth-child(3){
+            color: orange;
+        }
+    }
+}
+
+._4star{
+    svg{
+        &:nth-child(1){
+            color: orange;
+        }
+        &:nth-child(2){
+            color: orange;
+        }
+        &:nth-child(3){
+            color: orange;
+        }
+        &:nth-child(4){
+            color: orange;
+        }
+    }
+}
+
+._5star{
+    svg{
+        color: orange;
+    }
+}
