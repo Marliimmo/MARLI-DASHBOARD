@@ -20,13 +20,15 @@ function CardBien({
             alt='imag-bien'
           />
           <div
-            className={`${status === 'vendu' ? styles.statusBienVendu : status === 'sous-compromis' ? styles.statusSousCompromis : null}`}
+            className={`${status === 'vendu' || status === 'non-disponible' ? styles.statusBienVendu : status === 'sous-compromis' ? styles.statusSousCompromis : null}`}
           >
             {status === 'vendu'
               ? 'bien vendu'
               : status === 'sous-compromis'
                 ? 'sous compromis'
-                : null}
+                : status === 'non-disponible'
+                  ? 'Non disponible'
+                  : null}
           </div>
         </div>
 

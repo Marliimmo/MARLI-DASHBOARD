@@ -4,10 +4,11 @@ import { useState } from 'react'
 import Cookies from 'js-cookie'
 import NotifFeedBackFecth from '../NotifFeedBackFecth/NotifFeedBackFecth'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
   const [title, setTitle] = useState('')
-  const [status, setStatus] = useState('disponible')
+  const [status, setStatus] = useState('non-disponible')
   const [histoire, setHistoire] = useState('')
   const [localisation, setLocalisation] = useState('')
   const [prix, setPrix] = useState('')
@@ -208,6 +209,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
                 onChange={(e) => setStatus(e.target.value)}
                 id='statusBien'
               >
+                <option value='non-disponible'>Non disponible</option>
                 <option value='disponible'>Disponible</option>
                 <option value='sous-compromis'>Sous compromis</option>
                 <option value='vendu'>Bien vendu</option>
@@ -280,7 +282,16 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
           </button>
         )}
         {(context === 'update' || successCreateBien) && (
-          <button>Voir le bien</button>
+          <Link
+            target='_blank'
+            to={`https://choosews.com/marli/bien/${dataBien.ref}`}
+          >
+            <button style={{ backgroundColor: 'gray', color: 'white' }}>
+              {dataBien?.status === 'non-disponible'
+                ? 'Prévisualiser'
+                : 'Voir le bien'}
+            </button>
+          </Link>
         )}
       </div>
 

@@ -17,7 +17,7 @@ function Biens() {
   const [loading, setLoading] = useState('fecthLoad')
   const [hasMore, setHasMore] = useState(false)
   const [fecthUrl, setFecthUrl] = useState(
-    `${process.env.REACT_APP_API_URL}/bien/all-biens?filter&page=1&pageSize=10`,
+    `${process.env.REACT_APP_API_URL}/bien/all-biens?getAdmin=true&page=1&pageSize=10`,
   )
 
   // les constante pour gerer la recherche et filtre des biens
@@ -38,7 +38,7 @@ function Biens() {
   const NewUrlFecth = (e) => {
     e.preventDefault()
     setLoading('filtre')
-    let newUrl = `${process.env.REACT_APP_API_URL}/bien/all-biens?filter`
+    let newUrl = `${process.env.REACT_APP_API_URL}/bien/all-biens?getAdmin=true`
     if (bienSearch !== '') {
       newUrl = `${newUrl}${bienSearch}`
     }
