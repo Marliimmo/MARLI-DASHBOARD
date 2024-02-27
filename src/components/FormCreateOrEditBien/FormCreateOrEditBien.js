@@ -4,9 +4,10 @@ import { useState } from 'react'
 import Cookies from 'js-cookie'
 import NotifFeedBackFecth from '../NotifFeedBackFecth/NotifFeedBackFecth'
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
+  const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [status, setStatus] = useState('non-disponible')
   const [histoire, setHistoire] = useState('')
@@ -44,7 +45,8 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
   }
 
   const token = Cookies.get('_marli_tk_log')
-  const CreateBien = async () => {
+  const CreateBien = async (e) => {
+    e.preventDefault()
     setLoading('create')
     try {
       const data = JSON.stringify({
@@ -78,6 +80,10 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
           setCallBackMessage('flex')
           setMessageFecth('Bien créer avec succès')
 
+          setTimeout(() => {
+            navigate(`/dashboard/modifier-un-bien/${result.ref}`)
+          }, 1500)
+
           resetFeedBack()
         }, 1000)
       } else {
@@ -101,8 +107,9 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
     }
   }
 
-  const UpdateBien = async () => {
+  const UpdateBien = async (e) => {
     setLoading('update')
+    e.preventDefault()
     try {
       const data = JSON.stringify({
         title: title,
@@ -187,7 +194,15 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
   return (
     <>
       <div className={styles.allContainer}>
-        <form>
+        <form
+          onSubmit={
+            context === 'create'
+              ? CreateBien
+              : context === 'update'
+                ? UpdateBien
+                : null
+          }
+        >
           <div className={styles.twoElement}>
             <div>
               <label htmlFor='titleBien'>Titre du bien</label>
@@ -197,6 +212,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
                 value={title}
                 type='text'
                 id='titleBien'
+                required
               />
               <br />
             </div>
@@ -227,6 +243,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
             id='histoire'
             cols='30'
             rows='10'
+            required
           ></textarea>
           <br />
 
@@ -239,6 +256,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
                 value={localisation}
                 type='text'
                 id='localisation'
+                required
               />
               <br />
             </div>
@@ -253,6 +271,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
                 type='number'
                 id='prix'
                 min='1'
+                required
               />
               <br />
             </div>
@@ -267,32 +286,36 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
             value={caracteristique}
             type='text'
             id='caracteristique'
+            required
           />
           <br />
-        </form>
 
-        {context === 'create' && !successCreateBien && (
-          <button onClick={CreateBien}>
-            {loading === 'create' ? 'Veuillez patienter...' : 'Créer le bien'}
-          </button>
-        )}
-        {(context === 'update' || successCreateBien) && (
-          <button onClick={UpdateBien}>
-            {loading === 'update' ? 'Veuillez patienter...' : 'Mettre à jour'}
-          </button>
-        )}
-        {(context === 'update' || successCreateBien) && (
-          <Link
-            target='_blank'
-            to={`https://choosews.com/marli/bien/${dataBien.ref}`}
-          >
-            <button style={{ backgroundColor: 'gray', color: 'white' }}>
-              {dataBien?.status === 'non-disponible'
-                ? 'Prévisualiser'
-                : 'Voir le bien'}
+          {context === 'create' && !successCreateBien && (
+            <button type='submit'>
+              {loading === 'create' ? 'Veuillez patienter...' : 'Créer le bien'}
             </button>
-          </Link>
-        )}
+          )}
+          {(context === 'update' || successCreateBien) && (
+            <button type='submit'>
+              {loading === 'update' ? 'Veuillez patienter...' : 'Mettre à jour'}
+            </button>
+          )}
+          {(context === 'update' || successCreateBien) && (
+            <Link
+              target='_blank'
+              to={`https://choosews.com/marli/bien/${dataBien?.ref ? dataBien?.ref : reference}`}
+            >
+              <span
+                className={styles.seeBien}
+                style={{ backgroundColor: 'gray', color: 'white' }}
+              >
+                {dataBien?.status === 'non-disponible'
+                  ? 'Prévisualiser'
+                  : 'Voir le bien'}
+              </span>
+            </Link>
+          )}
+        </form>
       </div>
 
       <NotifFeedBackFecth

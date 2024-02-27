@@ -13,11 +13,11 @@ function Biens() {
   // const navigate = useNavigate()
   const [data, setData] = useState([])
   const [page, setPage] = useState(1)
-  const [pageSize] = useState(10)
+  const [pageSize] = useState(6)
   const [loading, setLoading] = useState('fecthLoad')
   const [hasMore, setHasMore] = useState(false)
   const [fecthUrl, setFecthUrl] = useState(
-    `${process.env.REACT_APP_API_URL}/bien/all-biens?getAdmin=true&page=1&pageSize=10`,
+    `${process.env.REACT_APP_API_URL}/bien/all-biens?getAdmin=true&page=1&pageSize=6`,
   )
 
   // les constante pour gerer la recherche et filtre des biens
@@ -45,7 +45,7 @@ function Biens() {
 
     setTimeout(() => {
       setLoading('')
-      setFecthUrl(`${newUrl}&page=1&pageSize=10`)
+      setFecthUrl(`${newUrl}&page=1&pageSize=6`)
       setPage(1)
     }, 1000)
   }
