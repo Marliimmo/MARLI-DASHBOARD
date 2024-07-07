@@ -35,7 +35,7 @@ function LeftMenu() {
         <div className={`p-20 ${styles.full_container}`}>
           {/* logo  */}
           <div className='w_sp_800'>
-            <Link to='/dashboard/tous-les-biens/'>
+            <Link to='/dashboard/'>
               <div className={styles.imageLogo}>
                 <img src={Logo} alt='Logo' />
                 <p>PASSEUR D'HISTOIRES IMMOBILIERES</p>

@@ -8,6 +8,7 @@ import CreateBien from './pages/CreerUnBien/CreerUnBien'
 import ModifierUnBien from './pages/ModifierUnBien/ModifierUnBien'
 import AvisUser from './pages/AvisUser/AvisUser'
 import AvisDrecherche from './pages/AvisDrecherche/AvisDrecherche'
+import Dashboard from './pages/Dashboard/Dashboard'
 
 // middlewares de vérification
 import AuthRequired from './middlewares/AuthRequired/AuthRequired'
@@ -25,6 +26,14 @@ export const router = createBrowserRouter([
         path: '/dashboard/*',
         caseSensitive: true,
         element: <NotFound />,
+      },
+      {
+        path: '/dashboard/',
+        element: (
+          <AuthRequired>
+            <Dashboard />
+          </AuthRequired>
+        ),
       },
       {
         path: '/dashboard/tous-les-biens',
