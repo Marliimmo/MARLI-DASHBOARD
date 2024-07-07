@@ -16,6 +16,7 @@ function Biens() {
   const [pageSize] = useState(6)
   const [loading, setLoading] = useState('fecthLoad')
   const [hasMore, setHasMore] = useState(false)
+  const [reload, setReload] = useState(false)
   const [fecthUrl, setFecthUrl] = useState(
     `${process.env.REACT_APP_API_URL}/bien/all-biens?getAdmin=true&page=1&pageSize=6`,
   )
@@ -112,7 +113,7 @@ function Biens() {
     }
 
     fetchInitialData()
-  }, [resquestOptions, fecthUrl])
+  }, [resquestOptions, fecthUrl, reload])
 
   return (
     <>
@@ -167,6 +168,7 @@ function Biens() {
                     status={bien?.status}
                     index={bien?.index}
                     reference={bien?.ref}
+                    reload={() => setReload(!reload)}
                   />
 
                   {/* <div className={styles.btnEditSeeOrClose}>
