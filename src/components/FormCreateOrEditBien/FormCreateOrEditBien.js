@@ -10,6 +10,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [status, setStatus] = useState('non-disponible')
+  const [index, setIndex] = useState(0)
   const [histoire, setHistoire] = useState('')
   const [localisation, setLocalisation] = useState('')
   const [prix, setPrix] = useState('')
@@ -52,6 +53,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
       const data = JSON.stringify({
         title: title,
         status: status,
+        index: index,
         histoire: histoire,
         localisation: localisation,
         prix: prix,
@@ -114,6 +116,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
       const data = JSON.stringify({
         title: title,
         status: status,
+        index: index,
         histoire: histoire,
         localisation: localisation,
         prix: prix,
@@ -173,6 +176,10 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
         setStatus(dataBien.status)
       }
 
+      if (dataBien.index) {
+        setIndex(dataBien.index)
+      }
+
       if (dataBien.histoire) {
         setHistoire(dataBien.histoire)
       }
@@ -230,6 +237,20 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
                 <option value='sous-compromis'>Sous compromis</option>
                 <option value='vendu'>Bien vendu</option>
               </select>
+              <br />
+            </div>
+
+            <div>
+              <label htmlFor='indexBien'>Position du bien</label>
+              <br />
+              <input
+                onChange={(e) => setIndex(e.target.value)}
+                value={index}
+                type='number'
+                id='indexBien'
+                style={{ maxWidth: '150px' }}
+                min={0}
+              />
               <br />
             </div>
           </div>

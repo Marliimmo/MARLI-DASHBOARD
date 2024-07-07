@@ -9,6 +9,7 @@ function CardBien({
   caracteristique,
   title,
   status,
+  index,
   reference,
 }) {
   return (
@@ -34,6 +35,7 @@ function CardBien({
 
         <div className={styles.detailsContainer}>
           <div>
+            {index > 0 && <div className={styles.positionBien}>{index}</div>}
             <h4 className={styles.localisation}>{localisation}</h4>
             <p className={styles.titleBien}>{title}</p>
 

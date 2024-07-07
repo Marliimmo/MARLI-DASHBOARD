@@ -165,6 +165,7 @@ function Biens() {
                     caracteristique={bien?.caracteristiques}
                     title={bien?.title}
                     status={bien?.status}
+                    index={bien?.index}
                     reference={bien?.ref}
                   />
 
