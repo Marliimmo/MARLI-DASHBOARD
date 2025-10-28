@@ -23,7 +23,7 @@ const VerifLogActif = ({ children }) => {
           )
           if (response.ok) {
             setTokenVerif(true)
-            navigate('/dashboard/tous-les-biens')
+            navigate('/tous-les-biens')
           } else {
             setTokenVerif(false)
           }

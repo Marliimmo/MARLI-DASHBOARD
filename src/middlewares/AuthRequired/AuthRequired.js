@@ -23,7 +23,7 @@ const AuthRequired = ({ children }) => {
         if (response.ok) {
           setTokenVerif(true)
         } else {
-          navigate('/dashboard/connexion')
+          navigate('/connexion')
           setTokenVerif(false)
         }
       } catch (error) {
