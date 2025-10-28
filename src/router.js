@@ -19,16 +19,16 @@ import NotFound from './not-found'
 
 export const router = createBrowserRouter([
   {
-    path: '/dashboard/',
+    path: '/',
     element: <App />,
     children: [
       {
-        path: '/dashboard/*',
+        path: '/*',
         caseSensitive: true,
         element: <NotFound />,
       },
       {
-        path: '/dashboard/',
+        path: '/',
         element: (
           <AuthRequired>
             <Dashboard />
@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/dashboard/tous-les-biens',
+        path: '/tous-les-biens',
         element: (
           <AuthRequired>
             <TousLesBiens />
@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/dashboard/creer-un-bien',
+        path: '/creer-un-bien',
         element: (
           <AuthRequired>
             <CreateBien />
@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/dashboard/modifier-un-bien/:reference',
+        path: '/modifier-un-bien/:reference',
         element: (
           <AuthRequired>
             <ModifierUnBien />
@@ -60,7 +60,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/dashboard/avis-client',
+        path: '/avis-client',
         element: (
           <AuthRequired>
             <AvisUser />
@@ -68,7 +68,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/dashboard/avis-de-recherche',
+        path: '/avis-de-recherche',
         element: (
           <AuthRequired>
             <AvisDrecherche />
@@ -76,7 +76,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/dashboard/connexion',
+        path: '/connexion',
         caseSensitive: true,
         element: (
           <VerifLogActif>
