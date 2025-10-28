@@ -35,7 +35,7 @@ function LeftMenu() {
         <div className={`p-20 ${styles.full_container}`}>
           {/* logo  */}
           <div className='w_sp_800'>
-            <Link to='/dashboard/'>
+            <Link to='/'>
               <div className={styles.imageLogo}>
                 <img src={Logo} alt='Logo' />
                 <p>PASSEUR D'HISTOIRES IMMOBILIERES</p>
@@ -55,7 +55,7 @@ function LeftMenu() {
               className={({ isActive }) =>
                 isActive ? `link_active` : 'link_menu'
               }
-              to='/dashboard/'
+              to='/'
             >
               <div>
                 <FontAwesomeIcon icon={faChartSimple} />
@@ -67,7 +67,7 @@ function LeftMenu() {
               className={({ isActive }) =>
                 isActive ? `link_active` : 'link_menu'
               }
-              to='/dashboard/tous-les-biens/'
+              to='/tous-les-biens/'
             >
               <div>
                 <FontAwesomeIcon icon={faHome} />
@@ -79,7 +79,7 @@ function LeftMenu() {
               className={({ isActive }) =>
                 isActive ? `link_active` : 'link_menu'
               }
-              to='/dashboard/avis-de-recherche/'
+              to='/avis-de-recherche/'
             >
               <div>
                 <FontAwesomeIcon icon={faSearch} />
@@ -91,7 +91,7 @@ function LeftMenu() {
               className={({ isActive }) =>
                 isActive ? `link_active` : 'link_menu'
               }
-              to='/dashboard/avis-client/'
+              to='/avis-client/'
             >
               <div>
                 <FontAwesomeIcon icon={faStar} />
