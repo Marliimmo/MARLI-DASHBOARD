@@ -71,7 +71,7 @@ function CardBien({
         <div className={styles.allContainer}>
           <div className={styles.imageContainer}>
             <img
-              src={`${process.env.REACT_APP_URL_BASE_IMAGE}${imgUrl}`}
+              src={imgUrl}
               alt='imag-bien'
             />
             <div
