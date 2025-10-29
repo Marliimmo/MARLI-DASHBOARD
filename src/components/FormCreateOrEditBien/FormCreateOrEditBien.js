@@ -324,7 +324,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
           {(context === 'update' || successCreateBien) && (
             <Link
               target='_blank'
-              to={`https://choosews.com/marli/bien/${dataBien?.ref ? dataBien?.ref : reference}`}
+              to={`https://marli-immobilier.com/bien/${dataBien?.ref ? dataBien?.ref : reference}`}
             >
               <span
                 className={styles.seeBien}
