@@ -49,7 +49,7 @@ function UpdateImageBien({ bienData, index, reference }) {
         newModif === false
       ) {
         setDeleteButton(true)
-        setImagePreview(`${process.env.REACT_APP_URL_BASE_IMAGE}${imageURL}`)
+        setImagePreview(imageURL)
       }
     }
 
@@ -76,7 +76,7 @@ function UpdateImageBien({ bienData, index, reference }) {
               setTimeout(async () => {
                 const result = await response.json()
                 setImagePreview(
-                  `${process.env.REACT_APP_URL_BASE_IMAGE}${result.imagePath}`,
+                  result.imagePath,
                 )
                 setLoading(false)
                 setDeleteButton(true)
