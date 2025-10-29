@@ -113,7 +113,7 @@ function AvisDrecherche() {
                   onClick={() => deleteWanted(wanted.urlImage, wanted._id)}
                 />
                 <img
-                  src={`${wanted.urlImage}`}
+                  src={`${process.env.REACT_APP_API_URL}/${wanted.urlImage}`}
                   alt='imag-avis'
                 />
               </div>
