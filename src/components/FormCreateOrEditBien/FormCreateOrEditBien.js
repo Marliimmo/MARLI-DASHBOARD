@@ -83,7 +83,7 @@ function FormCreateOrEditBien({ successCreate, context, dataBien, reference }) {
           setMessageFecth('Bien créer avec succès')
 
           setTimeout(() => {
-            navigate(`/dashboard/modifier-un-bien/${result.ref}`)
+            navigate(`/modifier-un-bien/${result.ref}`)
           }, 1500)
 
           resetFeedBack()

@@ -26,7 +26,7 @@ function LeftMenu() {
         Cookies.remove(nameCookie)
       }
     }
-    navigate('/dashboard/connexion')
+    navigate('/connexion')
   }
 
   return (

@@ -67,7 +67,7 @@ function CardBien({
         </div>
       </div>
 
-      <Link to={`/dashboard/modifier-un-bien/${reference}`}>
+      <Link to={`/modifier-un-bien/${reference}`}>
         <div className={styles.allContainer}>
           <div className={styles.imageContainer}>
             <img

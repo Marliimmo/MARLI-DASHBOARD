@@ -61,7 +61,7 @@ function Connexion() {
             expires: 1,
             sameSite: 'Strict',
           })
-          navigate(`/dashboard/tous-les-biens`)
+          navigate(`/tous-les-biens`)
         }, 1000)
       } else {
         setTimeout(async () => {

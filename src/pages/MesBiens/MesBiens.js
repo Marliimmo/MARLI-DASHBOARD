@@ -172,12 +172,12 @@ function Biens() {
                   />
 
                   {/* <div className={styles.btnEditSeeOrClose}>
-                    <Link to={`/dashboard/modifier-un-bien/${bien?.ref}`}>
+                    <Link to={`/modifier-un-bien/${bien?.ref}`}>
                       <button
                         className={styles.btnEditBien}
                         onClick={(e) => {
                           e.preventDefault()
-                          navigate(`/dashboard/modifier-un-bien/${bien?.ref}`)
+                          navigate(`/modifier-un-bien/${bien?.ref}`)
                         }}
                       >
                         Modifiier le bien
