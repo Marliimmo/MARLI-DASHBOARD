@@ -185,13 +185,13 @@ function Biens() {
                     </Link>
 
                     <Link
-                      to={`https://erzaconnect.com/erzaconnect/bien/${bien?._id}`}
+                      to={`https://marli-immobilier.com/bien/${bien?._id}`}
                     >
                       <button
                         className={styles.btnSeeBien}
                         onClick={(e) => {
                           e.preventDefault()
-                          window.location.href = `https://erzaconnect.com/erzaconnect/bien/${bien?._id}`
+                          window.location.href = `https://marli-immobilier.com/bien/${bien?._id}`
                         }}
                       >
                         Voir le bien
