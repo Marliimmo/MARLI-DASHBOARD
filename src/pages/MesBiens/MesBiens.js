@@ -145,7 +145,7 @@ function Biens() {
             </button>
           </form>
 
-          <Link to='/dashboard/creer-un-bien'>
+          <Link to='/creer-un-bien'>
             <button className={styles.btnAdd}>
               <p>Ajouter un bien</p>
               <FontAwesomeIcon icon={faPlus} />
