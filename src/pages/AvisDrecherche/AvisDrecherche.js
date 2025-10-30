@@ -113,7 +113,7 @@ function AvisDrecherche() {
                   onClick={() => deleteWanted(wanted.urlImage, wanted._id)}
                 />
                 <img
-                  src={`${process.env.REACT_APP_API_URL}/${wanted.urlImage}`}
+                  src={`https://marli-backend.onrender.com/${wanted.urlImage}`}
                   alt='imag-avis'
                 />
               </div>
