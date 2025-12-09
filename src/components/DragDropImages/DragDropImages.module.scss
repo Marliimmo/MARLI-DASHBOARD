@@ -1,4 +1,9 @@
 .dragDropContainer {
+  clear: both;
+  width: 100%;
+  max-width: 1400px;
+  margin: 40px auto 20px auto; // Ajout de margin-top pour espacer
+.dragDropContainer {
   padding: 20px;
   background: #fff;
   border-radius: 8px;
