@@ -65,34 +65,10 @@ function DragDropImages({ bienData, reference, onUpdate }) {
       } else {
         setModifAuthorize('error')
         setCallBackMessage('flex')
-        setMessageFecth('Erreur: format ou taille incorrecte (max 5MB)')
-        e.target.value = ''
+        setMessageFecth('Format ou taille de l\'image invalide')
         resetFeedBack()
       }
     }
-  }
-
-  const handleDragStart = (index) => {
-    setDraggedIndex(index)
-  }
-
-  const handleDragOver = (e) => {
-    e.preventDefault()
-  }
-
-  const handleDrop = (targetIndex) => {
-    if (draggedIndex === null || draggedIndex === targetIndex) return
-
-    const newImages = [...images]
-    const draggedImage = newImages[draggedIndex]
-    const targetImage = newImages[targetIndex]
-
-    newImages[draggedIndex] = targetImage
-    newImages[targetIndex] = draggedImage
-
-    setImages(newImages)
-    setDraggedIndex(null)
-    setHasChanges(true)
   }
 
   const showDeleteConfirmation = (index, e) => {
@@ -102,22 +78,17 @@ function DragDropImages({ bienData, reference, onUpdate }) {
   }
 
   const confirmDelete = async () => {
-    if (deleteTarget === null) return
-    
-    setConfirmationContainer(false)
     setLoading(true)
-
     try {
-      const imageToDelete = images[deleteTarget]
-      if (imageToDelete.url && !imageToDelete.isNew) {
+      if (deleteTarget !== null) {
         const tokenLog = Cookies.get('_marli_tk_log')
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/bien/medias/${imageToDelete.url}?index=${deleteTarget}&ref=${reference}`,
+          `${process.env.REACT_APP_API_URL}/bien/delete-image?index=${deleteTarget}&ref=${reference}`,
           {
             method: 'DELETE',
             headers: {
-              Authorization: `Bearer ${tokenLog}`,
-            },
+              Authorization: `Bearer ${tokenLog}`
+            }
           }
         )
 
@@ -128,7 +99,7 @@ function DragDropImages({ bienData, reference, onUpdate }) {
       newImages[deleteTarget] = { index: deleteTarget, url: null, file: null }
       setImages(newImages)
       setHasChanges(true)
-      
+
       setLoading(false)
       setModifAuthorize(true)
       setCallBackMessage('flex')
@@ -143,6 +114,26 @@ function DragDropImages({ bienData, reference, onUpdate }) {
     }
 
     setDeleteTarget(null)
+    setConfirmationContainer(false)
+  }
+
+  const handleDragStart = (index) => {
+    setDraggedIndex(index)
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (targetIndex) => {
+    if (draggedIndex === null || draggedIndex === targetIndex) return
+    const newImages = [...images]
+    const draggedImage = newImages[draggedIndex]
+    newImages[draggedIndex] = newImages[targetIndex]
+    newImages[targetIndex] = draggedImage
+    setImages(newImages)
+    setDraggedIndex(null)
+    setHasChanges(true)
   }
 
   const saveChanges = async () => {
@@ -154,7 +145,7 @@ function DragDropImages({ bienData, reference, onUpdate }) {
     try {
       for (let i = 0; i < images.length; i++) {
         const image = images[i]
-        
+
         if (image.file && image.isNew) {
           const formData = new FormData()
           formData.append('image', image.file)
@@ -193,7 +184,7 @@ function DragDropImages({ bienData, reference, onUpdate }) {
 
       setLoading(false)
       setHasChanges(false)
-      
+
       if (errorCount === 0) {
         setModifAuthorize(true)
         setCallBackMessage('flex')
@@ -203,9 +194,9 @@ function DragDropImages({ bienData, reference, onUpdate }) {
         setCallBackMessage('flex')
         setMessageFecth(`${successCount} réussite(s), ${errorCount} erreur(s)`)
       }
-      
+
       resetFeedBack()
-      
+
       if (onUpdate) onUpdate()
     } catch (error) {
       setLoading(false)
@@ -220,7 +211,6 @@ function DragDropImages({ bienData, reference, onUpdate }) {
     <>
       <div className={styles.container}>
         {loading && <GifLoading positionDiv='fixed' />}
-        
         <div className={styles.header}>
           <h3>Gestion des images (Glisser-Déposer pour réorganiser)</h3>
           {hasChanges && (
@@ -241,7 +231,7 @@ function DragDropImages({ bienData, reference, onUpdate }) {
               onDrop={() => handleDrop(index)}
             >
               <div className={styles.imageNumber}>{index}</div>
-              
+
               {image.url ? (
                 <>
                   <img src={image.url} alt={`Galerie ${index}`} />
@@ -294,3 +284,4 @@ function DragDropImages({ bienData, reference, onUpdate }) {
 }
 
 export default DragDropImages
+
