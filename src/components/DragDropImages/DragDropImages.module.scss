@@ -5,9 +5,11 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin: 40px 0 20px 0;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  position: relative; /* Ajoutez cette ligne */
+  z-index: 1; /* Ajoutez cette ligne */
 }
-
 .header {
   display: flex;
   justify-content: flex-start;
