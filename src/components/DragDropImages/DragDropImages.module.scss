@@ -3,61 +3,65 @@
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin: 40px 0 20px 0; // Changez cette ligne
-  width: 100%; // Ajoutez cette ligne
-  box-sizing: border-box; // Ajoutez cette ligne
+  margin: 40px 0 20px 0;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 .header {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 20px;
   gap: 15px;
-  padding: 15px 0; // Augmentez le padding
-  flex-wrap: wrap; // Ajoutez cette ligne pour que les boutons passent à la ligne si besoin
+  padding: 15px 0;
+  flex-wrap: wrap;
 }
+
 .uploadButton {
   background: #4CAF50;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
   transition: background 0.3s;
   display: flex;
   align-items: center;
   gap: 8px;
-  
-  &:hover {
-    background: #45a049;
-  }
-  
-  svg {
-    font-size: 16px;
-  }
+}
+
+.uploadButton:hover {
+  background: #45a049;
+}
+
+.uploadButton svg {
+  font-size: 16px;
 }
 
 .saveButton {
   background: #2196F3;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
   transition: background 0.3s;
   display: flex;
   align-items: center;
   gap: 8px;
-  
-  &:hover {
-    background: #1976D2;
-  }
-  
-  svg {
-    font-size: 16px;
-  }
+}
+
+.saveButton:hover {
+  background: #1976D2;
+}
+
+.saveButton svg {
+  font-size: 16px;
 }
 
 .fileInput {
@@ -66,11 +70,12 @@
 
 .imagesList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); // Réduisez de 200px à 180px
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 15px;
   margin-top: 20px;
-  width: 100%; // Ajoutez
+  width: 100%;
 }
+
 .imageItem {
   position: relative;
   aspect-ratio: 4/3;
@@ -80,17 +85,17 @@
   cursor: move;
   transition: all 0.3s;
   background: #f5f5f5;
-  
-  &:hover {
-    border-color: #4CAF50;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+}
+
+.imageItem:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.imageItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .deleteButton {
@@ -109,15 +114,15 @@
   cursor: pointer;
   transition: all 0.3s;
   z-index: 10;
-  
-  &:hover {
-    background: #f44336;
-    transform: scale(1.1);
-  }
-  
-  svg {
-    font-size: 18px;
-  }
+}
+
+.deleteButton:hover {
+  background: #f44336;
+  transform: scale(1.1);
+}
+
+.deleteButton svg {
+  font-size: 18px;
 }
 
 .dragHandle {
@@ -133,10 +138,10 @@
   justify-content: center;
   cursor: move;
   z-index: 5;
-  
-  svg {
-    font-size: 16px;
-  }
+}
+
+.dragHandle svg {
+  font-size: 16px;
 }
 
 .mainBadge {
