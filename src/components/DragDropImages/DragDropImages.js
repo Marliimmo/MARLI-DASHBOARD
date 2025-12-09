@@ -13,10 +13,159 @@ function DragDropImages({ bienData, reference, onUpdate }) {
   const [draggedIndex, setDraggedIndex] = useState(null)
   const [hasChanges, setHasChanges] = useState(false)
   const [confirmationContainer, setConfirmationContainer] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState(null)
-  const [modifAuthorize, setModifAuthorize] = useState('')
+import React, { useState } from 'react'
+import styles from './DragDropImages.module.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSave, faGripVertical, faCamera, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
+import GifLoading from '../GifLoading/GifLoading'
+import NotifFeedBackFecth from '../NotifFeedBackFecth/NotifFeedBackFecth'
+import ConfirmationRequired from '../ConfirmationRequired/ConfirmationRequired'
+
+const DragDropImages = ({ images: initialImages, onUpdate }) => {
+  const [images, setImages] = useState(initialImages)
+  const [draggedIndex, setDraggedIndex] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [hasChanges, setHasChanges] = useState(false)
+  const [confirmationContainer, setConfirmationContainer] = useState(false)
+  const [indexToDelete, setIndexToDelete] = useState(null)
+  const [modifAuthorize, setModifAuthorize] = useState(null)
+  const [callBackMessage, setCallBackMessage] = useState('none')
   const [messageFecth, setMessageFecth] = useState('')
-  const [callBackMessage, setCallBackMessage] = useState('')
+
+  const handleDragStart = (index) => {
+    setDraggedIndex(index)
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (index) => {
+    if (draggedIndex === null) return
+    const tempImages = [...images]
+    const draggedImage = tempImages[draggedIndex]
+    tempImages.splice(draggedIndex, 1)
+    tempImages.splice(index, 0, draggedImage)
+    setImages(tempImages)
+    setDraggedIndex(null)
+    setHasChanges(true)
+  }
+
+  const handleImageChange = (index, e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const tempImages = [...images]
+    tempImages[index] = { url: URL.createObjectURL(file), file }
+    setImages(tempImages)
+    setHasChanges(true)
+  }
+
+  const showDeleteConfirmation = (index, e) => {
+    e.stopPropagation()
+    setIndexToDelete(index)
+    setConfirmationContainer(true)
+  }
+
+  const confirmDelete = () => {
+    const tempImages = images.filter((_, i) => i !== indexToDelete)
+    setImages(tempImages)
+    setConfirmationContainer(false)
+    setHasChanges(true)
+  }
+
+  const saveChanges = () => {
+    // Ici tu peux appeler ton API pour sauvegarder
+    console.log('Saving images...', images)
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      setHasChanges(false)
+      setModifAuthorize(true)
+      setCallBackMessage('flex')
+      setMessageFecth('Images sauvegardées avec succès')
+      if (onUpdate) onUpdate()
+    }, 1000)
+  }
+
+  return (
+    <>
+      <div className={styles.container}>
+        {loading && <GifLoading positionDiv="fixed" />}
+
+        <div className={styles.header}>
+          <h3>Gestion des images (Glisser-Déposer pour réorganiser)</h3>
+          {hasChanges && (
+            <button className={styles.btnSave} onClick={saveChanges}>
+              <FontAwesomeIcon icon={faSave} /> Sauvegarder les modifications
+            </button>
+          )}
+        </div>
+
+        <div className={styles.imagesGrid}>
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className={`${styles.imageCard} ${draggedIndex === index ? styles.dragging : ''}`}
+              draggable={!!image.url}
+              onDragStart={() => handleDragStart(index)}
+              onDragOver={handleDragOver}
+              onDrop={() => handleDrop(index)}
+            >
+              <div className={styles.imageNumber}>{index}</div>
+
+              {image.url ? (
+                <>
+                  <img src={image.url} alt={`Galerie ${index}`} />
+                  <div className={styles.imageOverlay}>
+                    <FontAwesomeIcon icon={faGripVertical} className={styles.dragIcon} />
+                    <label htmlFor={`image-${index}`} className={styles.editIcon}>
+                      <FontAwesomeIcon icon={faCamera} />
+                    </label>
+                    <FontAwesomeIcon
+                      icon={faXmarkCircle}
+                      className={styles.deleteIcon}
+                      onClick={(e) => showDeleteConfirmation(index, e)}
+                    />
+                  </div>
+                </>
+              ) : (
+                <label htmlFor={`image-${index}`} className={styles.emptySlot}>
+                  <FontAwesomeIcon icon={faCamera} />
+                  <span>Ajouter une image</span>
+                </label>
+              )}
+
+              <input
+                id={`image-${index}`}
+                type="file"
+                accept=".jpg, .jpeg, .png, .webp, .svg"
+                onChange={(e) => handleImageChange(index, e)}
+                style={{ display: 'none' }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <NotifFeedBackFecth
+        modifAuthorizeValue={modifAuthorize}
+        callBackMessageValue={callBackMessage}
+        messageFecthValue={messageFecth}
+      />
+
+      {confirmationContainer && (
+        <ConfirmationRequired
+          contexte="Attention ! La suppression de cette image sera définitive. Confirmez-vous ?"
+          confirmation={confirmDelete}
+          reset={() => setConfirmationContainer(false)}
+        />
+      )}
+    </>
+  )
+}
+
+export default DragDropImages
+ate('')
 
   useEffect(() => {
     if (bienData?._medias) {
