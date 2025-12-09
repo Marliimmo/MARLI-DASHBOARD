@@ -416,21 +416,22 @@ ate('')
       </div>
 
       <NotifFeedBackFecth
-        modifAuthorizeValue={modifAuthorize}
-        callBackMessageValue={callBackMessage}
-        messageFecthValue={messageFecth}
+              modifAuthorizeValue={modifAuthorize}
+      callBackMessageValue={callBackMessage}
+      messageFecthValue={messageFecth}
+    />
+
+    {confirmationContainer && (
+      <ConfirmationRequired
+        contexte="Attention ! La suppression de cette image sera définitive."
+        confirmation={confirmDelete}
+        reset={() => setConfirmationContainer(false)}
       />
+    )}
+  </div>
+);
+};
 
-      {confirmationContainer && (
-        <ConfirmationRequired
-          contexte='Attention ! La suppression de cette image sera définitive. Confirmez-vous ?'
-          confirmation={confirmDelete}
-          reset={() => setConfirmationContainer(false)}
-        />
-      )}
-    </>
-  )
-}
+export default DragDropImages;
 
-export default DragDropImages
 
