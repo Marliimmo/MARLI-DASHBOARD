@@ -36,7 +36,6 @@ function ModifierUnBien() {
       </Helmet>
       <div className={styles.allContainer}>
         <h2 className='titlePage'>Modification d'un bien</h2>
-
         {data.length <= 0 ? (
           <p className={styles.bienNotFound}>Aucun bien non trouvé</p>
         ) : (
@@ -46,9 +45,8 @@ function ModifierUnBien() {
               reference={reference}
               context='update'
             />
-
-            <DragDropImages 
-              bienData={data} 
+            <DragDropImages
+              bienId={data._id}
               reference={reference}
               onUpdate={() => setReload(!reload)}
             />
