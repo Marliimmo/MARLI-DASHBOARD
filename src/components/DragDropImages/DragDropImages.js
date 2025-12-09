@@ -7,7 +7,7 @@ import NotifFeedBackFecth from '../NotifFeedBackFecth/NotifFeedBackFecth'
 import GifLoading from '../GifLoading/GifLoading'
 import ConfirmationRequired from '../ConfirmationRequired/ConfirmationRequired'
 
-const DragDropImages = ({ bienId, modifAuthorizeValue, callBackMessageValue, messageFecthValue, onUpdate }) => {
+const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessageValue, messageFecthValue, onUpdate }) => {
   const [images, setImages] = useState([])
   const [confirmationContainer, setConfirmationContainer] = useState(false)
   const [imageToDelete, setImageToDelete] = useState(null)
@@ -21,40 +21,48 @@ const DragDropImages = ({ bienId, modifAuthorizeValue, callBackMessageValue, mes
 
   // Charge les images existantes du bien
   useEffect(() => {
-    if (bienId) {
+    if (reference) {
       loadExistingImages()
     }
-  }, [bienId])
+  }, [reference])
 
   const loadExistingImages = async () => {
     setLoading(true)
     try {
-      const token = Cookies.get('token')
-      const response = await fetch(`${API_URL}/user/tk_log:1`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      })
+      const response = await fetch(`${API_URL}/bien/get-one?ref=${reference}`)
 
       if (response.ok) {
         const data = await response.json()
-        // Trouve le bien correspondant
-        const bien = data.biens?.find(b => b._id === bienId)
-        if (bien && bien.images) {
-          // Convertir les images existantes au bon format
-          const existingImages = bien.images.map((imgUrl, index) => ({
-            url: imgUrl,
-            existing: true,
-            id: index
-          }))
-          setImages(existingImages)
+        console.log('Données bien chargées:', data)
+        
+        // Extraire les images depuis _medias
+        if (data._medias) {
+          const imageUrls = []
+          // Les clés sont image_galerie_0, image_galerie_1, etc.
+          Object.keys(data._medias)
+            .filter(key => key.startsWith('image_galerie_'))
+            .sort((a, b) => {
+              const numA = parseInt(a.replace('image_galerie_', ''))
+              const numB = parseInt(b.replace('image_galerie_', ''))
+              return numA - numB
+            })
+            .forEach(key => {
+              if (data._medias[key]) {
+                imageUrls.push({
+                  url: data._medias[key],
+                  existing: true,
+                  id: key
+                })
+              }
+            })
+          setImages(imageUrls)
+          console.log('Images chargées:', imageUrls)
         }
-      } else if (response.status === 401) {
+      } else {
+        console.error('Erreur lors du chargement:', response.status)
         setModifAuthorize(false)
         setCallBackMessage(true)
-        setMessageFecth('Session expirée. Reconnectez-vous.')
+        setMessageFecth('Erreur lors du chargement des images.')
       }
     } catch (error) {
       console.error('Erreur lors du chargement des images:', error)
@@ -114,6 +122,7 @@ const DragDropImages = ({ bienId, modifAuthorizeValue, callBackMessageValue, mes
       setModifAuthorize(true)
       setCallBackMessage(true)
       setMessageFecth('Aucune modification à enregistrer.')
+      setTimeout(() => setCallBackMessage(false), 3000)
       return
     }
 
@@ -132,7 +141,7 @@ const DragDropImages = ({ bienId, modifAuthorizeValue, callBackMessageValue, mes
       // Ajouter l'ordre des images existantes
       const existingUrls = images.filter(img => img.existing).map(img => img.url)
       formData.append('existingImages', JSON.stringify(existingUrls))
-      formData.append('bienId', bienId)
+      formData.append('reference', reference)
 
       const response = await fetch(`${API_URL}/user/update-images`, {
         method: 'POST',
@@ -143,15 +152,17 @@ const DragDropImages = ({ bienId, modifAuthorizeValue, callBackMessageValue, mes
       })
 
       if (response.ok) {
-        const data = await response.json()
         setModifAuthorize(true)
         setCallBackMessage(true)
         setMessageFecth('Images enregistrées avec succès !')
         setHasChanges(false)
         
-        // Recharger les images pour avoir les URLs Cloudinary
+        // Recharger les images
         if (onUpdate) onUpdate()
-        loadExistingImages()
+        setTimeout(() => {
+          setCallBackMessage(false)
+          loadExistingImages()
+        }, 2000)
       } else if (response.status === 401) {
         setModifAuthorize(false)
         setCallBackMessage(true)
