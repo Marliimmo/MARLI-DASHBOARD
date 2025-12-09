@@ -1,1 +1,162 @@
-.container{padding:20px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.header h3{margin:0;color:#333}.btnSave{background:#4CAF50;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;font-size:14px;transition:background .3s}.btnSave:hover{background:#45a049}.btnSave svg{margin-right:8px}.imagesGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px}.imageCard{position:relative;aspect-ratio:1;border:2px dashed #ddd;border-radius:8px;overflow:hidden;cursor:move;transition:all .3s}.imageCard:hover{border-color:#4CAF50}.imageCard.dragging{opacity:.5;border-color:#2196F3}.imageCard img{width:100%;height:100%;object-fit:cover}.imageNumber{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.7);color:white;padding:2px 8px;border-radius:3px;font-size:12px;font-weight:bold;z-index:2}.imageOverlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;gap:15px;opacity:0;transition:opacity .3s}.imageCard:hover .imageOverlay{opacity:1}.imageOverlay svg{color:white;font-size:24px;cursor:pointer;transition:transform .2s}.imageOverlay svg:hover{transform:scale(1.2)}.dragIcon{cursor:move}.editIcon{cursor:pointer;display:flex;align-items:center;justify-content:center}.deleteIcon{color:#f44336!important}.emptySlot{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;color:#999;transition:all .3s}.emptySlot:hover{color:#4CAF50;background:rgba(76,175,80,.05)}.emptySlot svg{font-size:32px}.emptySlot span{font-size:12px}
+.dragDropContainer {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.uploadButton {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  &:hover {
+    background: #45a049;
+  }
+  
+  svg {
+    font-size: 16px;
+  }
+}
+
+.saveButton {
+  background: #2196F3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  &:hover {
+    background: #1976D2;
+  }
+  
+  svg {
+    font-size: 16px;
+  }
+}
+
+.fileInput {
+  display: none;
+}
+
+.imagesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.imageItem {
+  position: relative;
+  aspect-ratio: 4/3;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: move;
+  transition: all 0.3s;
+  background: #f5f5f5;
+  
+  &:hover {
+    border-color: #4CAF50;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.deleteButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(244, 67, 54, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 10;
+  
+  &:hover {
+    background: #f44336;
+    transform: scale(1.1);
+  }
+  
+  svg {
+    font-size: 18px;
+  }
+}
+
+.dragHandle {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: move;
+  z-index: 5;
+  
+  svg {
+    font-size: 16px;
+  }
+}
+
+.mainBadge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: #4CAF50;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 5;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 14px;
+  background: #f9f9f9;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+}
