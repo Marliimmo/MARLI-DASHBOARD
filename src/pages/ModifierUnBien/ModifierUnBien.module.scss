@@ -1,88 +1,75 @@
-.allContainer{
-    h3{
+.allContainer {
+    padding-bottom: 200px;
+    
+    h3 {
         font-size: 25px;
         font-weight: 500;
         margin: 0px 0px 30px 0px;
     }
-
-    .bienNotFound{
+    
+    .bienNotFound {
         padding: 50px 10% 30px 23%;
         font-size: 30px;
         text-align: center;
-
         @media screen and (max-width: 1200px) {
             padding: 50px 10% 30px 110px;
         }
     }
-
-    .SectionImage{
+    
+    .SectionImage {
         padding: 0px 10% 30px 23%;
-
-        .imageContent{
+        
+        .imageContent {
             position: relative;
             width: 100%;
             height: 400px;
-            overflow: hidden;
-            // margin-bottom: 35px;
             display: flex;
             justify-content: space-between;
-            // column-gap: 10px;
-
-            .imagePremierePlan{
+            
+            .imagePremierePlan {
                 position: relative;
                 overflow: hidden;
                 border-radius: 20px;
                 flex: 1 0 350px;
-                form{
+                
+                form {
                     height: 400px;
-                    div{
+                    
+                    div {
                         height: 400px;
-                        img{
+                        
+                        img {
                             height: 400px;
                             object-fit: cover;
                         }
                     }
                 }
-
             }
-    
-            .galerieSection{
+            
+            .galerieSection {
                 overflow: hidden;
                 justify-content: space-between;
                 height: 400px;
                 overflow-y: scroll;
-                flex : 1 0 200px;
+                flex: 1 0 200px;
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 10px;
-    
-                & > div{
+                
+                & > div {
                     width: 44%;
                     height: 120px;
                     min-width: 44%;
                     min-height: 120px;
                     border-radius: 10px;
                     overflow: hidden;
-
-    
-                    // & > img{
-                    //     width: 100%;
-                    //     height: 130px;
-                    //     min-width: 100%;
-                    //     min-height: 130px;
-                    //     object-fit: cover;
-                    //     border-radius: 10px;
-                    // }
                 }
             }
         }
-
+        
         @media screen and (max-width: 1200px) {
             padding: 0px 10% 30px 110px;
         }
     }
-}
-.allContainer {
-  padding-bottom: 100px; // Espace en bas pour que tout soit visible
 }
