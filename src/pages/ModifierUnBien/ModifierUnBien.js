@@ -19,10 +19,8 @@ function ModifierUnBien() {
         )
         if (response.ok) {
           const result = await response.json()
+          console.log('DATA DU BIEN:', result)
           setData(result)
-const result = await response.json()
-console.log('DATA DU BIEN:', result)  // <-- AJOUTEZ CETTE LIGNE
-setData(result)
         }
       }
       fectchData()
