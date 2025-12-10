@@ -33,9 +33,8 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
       if (response.ok) {
         const data = await response.json()
         console.log('Données bien chargées:', data)
-        
+
         if (data._medias) {
-         
           const imageUrls = []
           Object.keys(data._medias)
             .filter(key => key.startsWith('image_galerie_'))
@@ -46,20 +45,20 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
             })
             .forEach(key => {
               const imageData = data._medias[key]
-            
-              
               let imageUrl = null
+              
               if (typeof imageData === 'string') {
                 imageUrl = imageData
               } else if (imageData && imageData.url) {
                 imageUrl = imageData.url
-              } else if (imageData && imageData.path) {
-                imageUrl = imageData.path
-              } else if (imageData && imageData.src) {
-                imageUrl = imageData.src
               }
               
               if (imageUrl) {
+                // Si l'URL ne commence pas par http, construire l'URL complète
+                if (!imageUrl.startsWith('http')) {
+                  imageUrl = `${API_URL}/bien/images/imagesBienMarli/${imageUrl}`
+                }
+                
                 imageUrls.push({
                   url: imageUrl,
                   existing: true,
@@ -67,7 +66,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
                 })
               }
             })
-          
+
           setImages(imageUrls)
         }
       } else {
@@ -141,52 +140,38 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
     setLoading(true)
     try {
       const token = Cookies.get('token')
-      const formData = new FormData()
 
-      images.forEach((img, index) => {
+      // Upload chaque image une par une avec la route existante
+      for (let i = 0; i < images.length; i++) {
+        const img = images[i]
         if (!img.existing && img.file) {
-          formData.append('images', img.file)
+          const formData = new FormData()
+          formData.append('image', img.file)
+          
+          await fetch(`${API_URL}/bien/update-image?index=${i + 1}&ref=${reference}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: formData
+          })
         }
-      })
-
-      const existingUrls = images.filter(img => img.existing).map(img => img.url)
-      formData.append('existingImages', JSON.stringify(existingUrls))
-      formData.append('reference', reference)
-
-      const response = await fetch(`${API_URL}/bien/update-multiple-images`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      })
-
-      if (response.ok) {
-        setModifAuthorize(true)
-        setCallBackMessage(true)
-        setMessageFecth('Images enregistrées avec succès !')
-        setHasChanges(false)
-        
-        if (onUpdate) onUpdate()
-        setTimeout(() => {
-          setCallBackMessage(false)
-          loadExistingImages()
-        }, 2000)
-      } else if (response.status === 401) {
-        setModifAuthorize(false)
-        setCallBackMessage(true)
-        setMessageFecth('Session expirée. Reconnectez-vous.')
-      } else {
-        const error = await response.json()
-        setModifAuthorize(false)
-        setCallBackMessage(true)
-        setMessageFecth(error.message || 'Erreur lors de l\'enregistrement.')
       }
+
+      setModifAuthorize(true)
+      setCallBackMessage(true)
+      setMessageFecth('Images enregistrées avec succès !')
+      setHasChanges(false)
+      if (onUpdate) onUpdate()
+      
+      setTimeout(() => {
+        setCallBackMessage(false)
+        loadExistingImages()
+      }, 2000)
+
     } catch (error) {
       console.error('Erreur:', error)
       setModifAuthorize(false)
       setCallBackMessage(true)
-      setMessageFecth('Erreur de connexion au serveur.')
+      setMessageFecth('Erreur lors de l\'enregistrement.')
     } finally {
       setLoading(false)
     }
@@ -230,7 +215,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
                 onDragOver={(e) => e.preventDefault()}
               >
                 <img src={img.url} alt={`upload-${index}`} />
-                <button 
+                <button
                   onClick={() => handleDeleteClick(index)}
                   className={styles.deleteButton}
                   type="button"
