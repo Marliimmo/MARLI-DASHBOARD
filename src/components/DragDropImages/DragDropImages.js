@@ -19,7 +19,6 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
 
   const API_URL = process.env.REACT_APP_API_URL || 'https://marli-backend.onrender.com'
 
-  // Charge les images existantes du bien
   useEffect(() => {
     if (reference) {
       loadExistingImages()
@@ -35,46 +34,42 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
         const data = await response.json()
         console.log('Données bien chargées:', data)
         
-        // Extraire les images depuis _medias
-                      }
-          // Extraire les images depuis _medias
-if (data._medias) {
-  console.log('Structure _medias complète:', JSON.stringify(data._medias, null, 2))
-  const imageUrls = []
-  Object.keys(data._medias)
-    .filter(key => key.startsWith('image_galerie_'))
-    .sort((a, b) => {
-      const numA = parseInt(a.replace('image_galerie_', ''))
-      const numB = parseInt(b.replace('image_galerie_', ''))
-      return numA - numB
-    })
-    .forEach(key => {
-      const imageData = data._medias[key]
-      console.log(`Image ${key}:`, imageData)
-      
-      // Gérer différents formats possibles
-      let imageUrl = null
-      if (typeof imageData === 'string') {
-        imageUrl = imageData
-      } else if (imageData && imageData.url) {
-        imageUrl = imageData.url
-      } else if (imageData && imageData.path) {
-        imageUrl = imageData.path
-      } else if (imageData && imageData.src) {
-        imageUrl = imageData.src
-      }
-      
-      if (imageUrl) {
-        imageUrls.push({
-          url: imageUrl,
-          existing: true,
-          id: key
-        })
-      }
-    })
-  console.log('URLs extraites:', imageUrls)
-  setImages(imageUrls)
-}
+        if (data._medias) {
+          console.log('Structure _medias complète:', JSON.stringify(data._medias, null, 2))
+          const imageUrls = []
+          Object.keys(data._medias)
+            .filter(key => key.startsWith('image_galerie_'))
+            .sort((a, b) => {
+              const numA = parseInt(a.replace('image_galerie_', ''))
+              const numB = parseInt(b.replace('image_galerie_', ''))
+              return numA - numB
+            })
+            .forEach(key => {
+              const imageData = data._medias[key]
+              console.log(`Image ${key}:`, imageData)
+              
+              let imageUrl = null
+              if (typeof imageData === 'string') {
+                imageUrl = imageData
+              } else if (imageData && imageData.url) {
+                imageUrl = imageData.url
+              } else if (imageData && imageData.path) {
+                imageUrl = imageData.path
+              } else if (imageData && imageData.src) {
+                imageUrl = imageData.src
+              }
+              
+              if (imageUrl) {
+                imageUrls.push({
+                  url: imageUrl,
+                  existing: true,
+                  id: key
+                })
+              }
+            })
+          console.log('URLs extraites:', imageUrls)
+          setImages(imageUrls)
+        }
       } else {
         console.error('Erreur lors du chargement:', response.status)
         setModifAuthorize(false)
@@ -148,14 +143,12 @@ if (data._medias) {
       const token = Cookies.get('token')
       const formData = new FormData()
 
-      // Ajouter les nouvelles images
       images.forEach((img, index) => {
         if (!img.existing && img.file) {
           formData.append('images', img.file)
         }
       })
 
-      // Ajouter l'ordre des images existantes
       const existingUrls = images.filter(img => img.existing).map(img => img.url)
       formData.append('existingImages', JSON.stringify(existingUrls))
       formData.append('reference', reference)
@@ -174,7 +167,6 @@ if (data._medias) {
         setMessageFecth('Images enregistrées avec succès !')
         setHasChanges(false)
         
-        // Recharger les images
         if (onUpdate) onUpdate()
         setTimeout(() => {
           setCallBackMessage(false)
