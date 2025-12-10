@@ -1,82 +1,73 @@
 .allContainer {
-    padding-bottom: 200px;
+  padding: 20px 10% 100px 23%;
+  min-height: 100vh;
+  
+  @media screen and (max-width: 1200px) {
+    padding: 20px 10% 100px 110px;
+  }
+  
+  h3 {
+    font-size: 25px;
+    font-weight: 500;
+    margin: 0px 0px 30px 0px;
+  }
+  
+  .bienNotFound {
+    padding: 50px 0 30px 0;
+    font-size: 30px;
+    text-align: center;
+  }
+  
+  .SectionImage {
+    padding: 0px 0 30px 0;
     
-    h3 {
-        font-size: 25px;
-        font-weight: 500;
-        margin: 0px 0px 30px 0px;
-    }
-    
-    .bienNotFound {
-        padding: 50px 10% 30px 23%;
-        font-size: 30px;
-        text-align: center;
-        @media screen and (max-width: 1200px) {
-            padding: 50px 10% 30px 110px;
-        }
-    }
-    
-    .SectionImage {
-        padding: 0px 10% 30px 23%;
+    .imageContent {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      display: flex;
+      justify-content: space-between;
+      
+      .imagePremierePlan {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        flex: 1 0 350px;
         
-        .imageContent {
-            position: relative;
-            width: 100%;
+        form {
+          height: 400px;
+          
+          div {
             height: 400px;
-            display: flex;
-            justify-content: space-between;
             
-            .imagePremierePlan {
-                position: relative;
-                overflow: hidden;
-                border-radius: 20px;
-                flex: 1 0 350px;
-                
-                form {
-                    height: 400px;
-                    
-                    div {
-                        height: 400px;
-                        
-                        img {
-                            height: 400px;
-                            object-fit: cover;
-                        }
-                    }
-                }
+            img {
+              height: 400px;
+              object-fit: cover;
             }
-            
-            .galerieSection {
-                overflow: hidden;
-                justify-content: space-between;
-                height: 400px;
-                overflow-y: scroll;
-                flex: 1 0 200px;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-                
-                & > div {
-                    width: 44%;
-                    height: 120px;
-                    min-width: 44%;
-                    min-height: 120px;
-                    border-radius: 10px;
-                    overflow: hidden;
-                }
-            }
+          }
         }
+      }
+      
+      .galerieSection {
+        overflow: hidden;
+        justify-content: space-between;
+        height: 400px;
+        overflow-y: scroll;
+        flex: 1 0 200px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
         
-        @media screen and (max-width: 1200px) {
-            padding: 0px 10% 30px 110px;
+        & > div {
+          width: 44%;
+          height: 120px;
+          min-width: 44%;
+          min-height: 120px;
+          border-radius: 10px;
+          overflow: hidden;
         }
+      }
     }
-}
-// Force le composant DragDropImages à être visible
-:global(.DragDropImages_dragDropContainer__TrKQ) {
-    position: relative !important;
-    z-index: 10 !important;
-    margin-top: 50px !important;
-    clear: both !important;
+  }
 }
