@@ -56,8 +56,10 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
               if (imageUrl) {
                 // Si l'URL ne commence pas par http, construire l'URL complète
                 if (!imageUrl.startsWith('http')) {
-                  imageUrl = `${API_URL}/bien/images/imagesBienMarli/${imageUrl}`
-                }
+  // Enlever "imagesBienMarli/" du début si présent
+  const cleanUrl = imageUrl.replace('imagesBienMarli/', '')
+  imageUrl = `${API_URL}/bien/images/imagesBienMarli/${cleanUrl}`
+}
                 
                 imageUrls.push({
                   url: imageUrl,
