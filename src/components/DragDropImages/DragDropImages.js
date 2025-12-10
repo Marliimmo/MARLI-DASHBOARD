@@ -36,29 +36,45 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
         console.log('Données bien chargées:', data)
         
         // Extraire les images depuis _medias
-        if (data._medias) {
-          const imageUrls = []
-          Object.keys(data._medias)
-            .filter(key => key.startsWith('image_galerie_'))
-            .sort((a, b) => {
-              const numA = parseInt(a.replace('image_galerie_', ''))
-              const numB = parseInt(b.replace('image_galerie_', ''))
-              return numA - numB
-            })
-            .forEach(key => {
-              const imageUrl = data._medias[key]
-              // IMPORTANT: Vérifier que c'est une vraie URL string
-              if (imageUrl && typeof imageUrl === 'string') {
-                imageUrls.push({
-                  url: imageUrl,
-                  existing: true,
-                  id: key
-                })
-              }
-            })
-          console.log('URLs extraites:', imageUrls)
-          setImages(imageUrls)
-        }
+                      }
+          // Extraire les images depuis _medias
+if (data._medias) {
+  console.log('Structure _medias complète:', JSON.stringify(data._medias, null, 2))
+  const imageUrls = []
+  Object.keys(data._medias)
+    .filter(key => key.startsWith('image_galerie_'))
+    .sort((a, b) => {
+      const numA = parseInt(a.replace('image_galerie_', ''))
+      const numB = parseInt(b.replace('image_galerie_', ''))
+      return numA - numB
+    })
+    .forEach(key => {
+      const imageData = data._medias[key]
+      console.log(`Image ${key}:`, imageData)
+      
+      // Gérer différents formats possibles
+      let imageUrl = null
+      if (typeof imageData === 'string') {
+        imageUrl = imageData
+      } else if (imageData && imageData.url) {
+        imageUrl = imageData.url
+      } else if (imageData && imageData.path) {
+        imageUrl = imageData.path
+      } else if (imageData && imageData.src) {
+        imageUrl = imageData.src
+      }
+      
+      if (imageUrl) {
+        imageUrls.push({
+          url: imageUrl,
+          existing: true,
+          id: key
+        })
+      }
+    })
+  console.log('URLs extraites:', imageUrls)
+  setImages(imageUrls)
+}
       } else {
         console.error('Erreur lors du chargement:', response.status)
         setModifAuthorize(false)
