@@ -73,3 +73,10 @@
         }
     }
 }
+// Force le composant DragDropImages à être visible
+:global(.DragDropImages_dragDropContainer__TrKQ) {
+    position: relative !important;
+    z-index: 10 !important;
+    margin-top: 50px !important;
+    clear: both !important;
+}
