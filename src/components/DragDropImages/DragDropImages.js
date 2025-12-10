@@ -35,7 +35,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
         console.log('Données bien chargées:', data)
         
         if (data._medias) {
-          console.log('Structure _medias complète:', JSON.stringify(data._medias, null, 2))
+         
           const imageUrls = []
           Object.keys(data._medias)
             .filter(key => key.startsWith('image_galerie_'))
@@ -46,7 +46,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
             })
             .forEach(key => {
               const imageData = data._medias[key]
-              console.log(`Image ${key}:`, imageData)
+            
               
               let imageUrl = null
               if (typeof imageData === 'string') {
@@ -67,7 +67,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
                 })
               }
             })
-          console.log('URLs extraites:', imageUrls)
+          
           setImages(imageUrls)
         }
       } else {
