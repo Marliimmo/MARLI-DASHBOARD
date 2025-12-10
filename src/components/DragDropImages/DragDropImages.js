@@ -38,7 +38,6 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
         // Extraire les images depuis _medias
         if (data._medias) {
           const imageUrls = []
-          // Les clés sont image_galerie_0, image_galerie_1, etc.
           Object.keys(data._medias)
             .filter(key => key.startsWith('image_galerie_'))
             .sort((a, b) => {
@@ -47,29 +46,19 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
               return numA - numB
             })
             .forEach(key => {
-              if (data._medias) {
-  const imageUrls = []
-  Object.keys(data._medias)
-    .filter(key => key.startsWith('image_galerie_'))
-    .sort((a, b) => {
-      const numA = parseInt(a.replace('image_galerie_', ''))
-      const numB = parseInt(b.replace('image_galerie_', ''))
-      return numA - numB
-    })
-    .forEach(key => {
-      const imageUrl = data._medias[key]
-      // IMPORTANT: Vérifier que c'est une vraie URL string
-      if (imageUrl && typeof imageUrl === 'string') {
-        imageUrls.push({
-          url: imageUrl,
-          existing: true,
-          id: key
-        })
-      }
-    })
-  console.log('URLs extraites:', imageUrls)
-  setImages(imageUrls)
-}
+              const imageUrl = data._medias[key]
+              // IMPORTANT: Vérifier que c'est une vraie URL string
+              if (imageUrl && typeof imageUrl === 'string') {
+                imageUrls.push({
+                  url: imageUrl,
+                  existing: true,
+                  id: key
+                })
+              }
+            })
+          console.log('URLs extraites:', imageUrls)
+          setImages(imageUrls)
+        }
       } else {
         console.error('Erreur lors du chargement:', response.status)
         setModifAuthorize(false)
