@@ -153,7 +153,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
       formData.append('existingImages', JSON.stringify(existingUrls))
       formData.append('reference', reference)
 
-      const response = await fetch(`${API_URL}/bien/update-image`, {
+      const response = await fetch(`${API_URL}/bien/update-multiple-images`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
