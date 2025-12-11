@@ -139,7 +139,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
 
     setLoading(true)
     try {
-      const token = Cookies.get('token')
+      const token = Cookies.get('_marli_tk_log')
 
       // Supprimer toutes les images existantes d'abord
       await fetch(`${API_URL}/bien/update?ref=${reference}`, {
