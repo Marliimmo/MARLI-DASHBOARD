@@ -46,21 +46,19 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
             .forEach(key => {
               const imageData = data._medias[key]
               let imageUrl = null
-              
+
               if (typeof imageData === 'string') {
                 imageUrl = imageData
               } else if (imageData && imageData.url) {
                 imageUrl = imageData.url
               }
-              
+
               if (imageUrl) {
-                // Si l'URL ne commence pas par http, construire l'URL complète
                 if (!imageUrl.startsWith('http')) {
-  // Enlever "imagesBienMarli/" du début si présent
-  const cleanUrl = imageUrl.replace('imagesBienMarli/', '')
-  imageUrl = `${API_URL}/bien/images/imagesBienMarli/${cleanUrl}`
-}
-                
+                  const cleanUrl = imageUrl.replace('imagesBienMarli/', '')
+                  imageUrl = `${API_URL}/bien/images/imagesBienMarli/${cleanUrl}`
+                }
+
                 imageUrls.push({
                   url: imageUrl,
                   existing: true,
@@ -143,19 +141,36 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
     try {
       const token = Cookies.get('token')
 
-      // Upload chaque image une par une avec la route existante
+      // Supprimer toutes les images existantes d'abord
+      await fetch(`${API_URL}/bien/update?ref=${reference}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ _medias: {} })
+      })
+
+      // Upload toutes les images dans le nouvel ordre
       for (let i = 0; i < images.length; i++) {
         const img = images[i]
-        if (!img.existing && img.file) {
-          const formData = new FormData()
+        const formData = new FormData()
+        
+        if (img.file) {
+          // Nouvelle image
           formData.append('image', img.file)
-          
-          await fetch(`${API_URL}/bien/update-image?index=${i + 1}&ref=${reference}`, {
-            method: 'PUT',
-            headers: { 'Authorization': `Bearer ${token}` },
-            body: formData
-          })
+        } else if (img.existing && img.url) {
+          // Image existante - télécharger et ré-uploader
+          const response = await fetch(img.url)
+          const blob = await response.blob()
+          formData.append('image', blob, 'image.jpg')
         }
+
+        await fetch(`${API_URL}/bien/update-image?index=${i}&ref=${reference}`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        })
       }
 
       setModifAuthorize(true)
@@ -163,10 +178,9 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
       setMessageFecth('Images enregistrées avec succès !')
       setHasChanges(false)
       if (onUpdate) onUpdate()
-      
+
       setTimeout(() => {
         setCallBackMessage(false)
-        loadExistingImages()
       }, 2000)
 
     } catch (error) {
