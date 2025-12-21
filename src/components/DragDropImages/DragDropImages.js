@@ -218,9 +218,9 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
       {callBackMessage && <NotifFeedBackFecth message={messageFecth} authorize={modifAuthorize} />}
       {confirmationContainer && (
         <ConfirmationRequired
-          message="Êtes-vous sûr de vouloir supprimer cette image ?"
-          onConfirm={confirmDelete}
-          onCancel={cancelDelete}
+          contexte="Êtes-vous sûr de vouloir supprimer cette image ?"
+          confirmation={confirmDelete}
+          reset={cancelDelete}
         />
       )}
       <div className={styles.header}>
