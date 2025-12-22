@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
 import App from './App'
-
 // composants de pages
 import TousLesBiens from './pages/MesBiens/MesBiens'
 import Connexion from './pages/connexion/connexion'
@@ -9,11 +8,11 @@ import ModifierUnBien from './pages/ModifierUnBien/ModifierUnBien'
 import AvisUser from './pages/AvisUser/AvisUser'
 import AvisDrecherche from './pages/AvisDrecherche/AvisDrecherche'
 import Dashboard from './pages/Dashboard/Dashboard'
-
+import MesArticles from './pages/MesArticles/MesArticles' // ✅ NOUVEAU
+import GererArticle from './pages/GererArticle/GererArticle' // ✅ NOUVEAU
 // middlewares de vérification
 import AuthRequired from './middlewares/AuthRequired/AuthRequired'
 import VerifLogActif from './middlewares/VerifLogActif/VerifLogActif'
-
 // page d'erreur
 import NotFound from './not-found'
 
@@ -75,6 +74,32 @@ export const router = createBrowserRouter([
           </AuthRequired>
         ),
       },
+      // ✅ NOUVELLES ROUTES ARTICLES
+      {
+        path: '/mes-articles',
+        element: (
+          <AuthRequired>
+            <MesArticles />
+          </AuthRequired>
+        ),
+      },
+      {
+        path: '/gerer-article',
+        element: (
+          <AuthRequired>
+            <GererArticle />
+          </AuthRequired>
+        ),
+      },
+      {
+        path: '/gerer-article/:id',
+        element: (
+          <AuthRequired>
+            <GererArticle />
+          </AuthRequired>
+        ),
+      },
+      // FIN NOUVELLES ROUTES
       {
         path: '/connexion',
         caseSensitive: true,
