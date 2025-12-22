@@ -8,6 +8,7 @@ import {
   faRightFromBracket,
   faSearch,
   faStar,
+  faNewspaper, // ✅ NOUVELLE ICÔNE
 } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 import Cookies from 'js-cookie'
@@ -75,6 +76,19 @@ function LeftMenu() {
               </div>
             </NavLink>
 
+            {/* ✅ NOUVEAU LIEN ARTICLES */}
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? `link_active` : 'link_menu'
+              }
+              to='/mes-articles/'
+            >
+              <div>
+                <FontAwesomeIcon icon={faNewspaper} />
+                <span className={styles.menuTitle}>Articles</span>
+              </div>
+            </NavLink>
+
             <NavLink
               className={({ isActive }) =>
                 isActive ? `link_active` : 'link_menu'
@@ -105,7 +119,7 @@ function LeftMenu() {
                 <span className={styles.menuTitle}>Utilisateurs</span>
               </div>
             </NavLink>
-            
+
             <NavLink className={({ isActive }) => (isActive ? `link_active` : 'link_menu')} to="/dashboard/projects">
               <div>
                 <FontAwesomeIcon icon={faBriefcase}/>
