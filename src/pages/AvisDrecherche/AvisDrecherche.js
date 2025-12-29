@@ -39,8 +39,8 @@ function AvisDrecherche() {
     }
     
     // Sinon, c'est un chemin local, construire l'URL vers le backend
-    const cleanUrl = urlImage.replace('imagesWanted/', '')
-    return `${API_URL}/bien/images/imagesWanted/${cleanUrl}`
+    // Garder le chemin complet tel quel
+return `${API_URL}/bien/${urlImage}`
   }
 
   const deleteWanted = async (key, id) => {
