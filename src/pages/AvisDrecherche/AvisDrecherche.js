@@ -15,6 +15,8 @@ function AvisDrecherche() {
   const [callBackMessage, setCallBackMessage] = useState('')
   const [loading, setLoading] = useState('')
 
+  const API_URL = process.env.REACT_APP_API_URL || 'https://marli-backend.onrender.com'
+
   function resetFeedBack() {
     setTimeout(() => {
       setModifAuthorize('')
@@ -27,12 +29,26 @@ function AvisDrecherche() {
     setSuccesSave(!succesSave)
   }
 
+  // ✅ NOUVELLE FONCTION : Construire l'URL de l'image
+  const getImageUrl = (urlImage) => {
+    if (!urlImage) return ''
+    
+    // Si c'est déjà une URL Cloudinary complète, la retourner telle quelle
+    if (urlImage.startsWith('http')) {
+      return urlImage
+    }
+    
+    // Sinon, c'est un chemin local, construire l'URL vers le backend
+    const cleanUrl = urlImage.replace('imagesWanted/', '')
+    return `${API_URL}/bien/images/imagesWanted/${cleanUrl}`
+  }
+
   const deleteWanted = async (key, id) => {
     const token = Cookies.get('_marli_tk_log')
     setLoading(id)
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/bien/delete-wanted?key=${key.split('imagesWanted/')[1]}&id=${id}`,
+        `${API_URL}/bien/delete-wanted?key=${key.split('imagesWanted/')[1]}&id=${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -48,7 +64,6 @@ function AvisDrecherche() {
           setCallBackMessage('flex')
           setMessageFecth('Avis de recherche supprimé avec succès.')
           handleSuccesSave()
-
           resetFeedBack()
         }, 2000)
       } else {
@@ -59,7 +74,6 @@ function AvisDrecherche() {
           setMessageFecth(
             "Oups, une erreur s'est produite, veuillez réessayer plustard.",
           )
-
           resetFeedBack()
         }, 2000)
       }
@@ -70,7 +84,6 @@ function AvisDrecherche() {
       setMessageFecth(
         "Oups, une erreur s'est produite, veuillez réessayer plustard.",
       )
-
       resetFeedBack()
       console.log('Erreur lors de la requette fecth', error)
     }
@@ -80,7 +93,7 @@ function AvisDrecherche() {
     try {
       const fecthWanteds = async () => {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/bien/get-wanteds`,
+          `${API_URL}/bien/get-wanteds`,
         )
         if (response.ok) {
           const result = await response.json()
@@ -100,7 +113,6 @@ function AvisDrecherche() {
         <div>
           <WantedForm succesSave={handleSuccesSave} />
         </div>
-
         <div className={styles.allWanted}>
           {wanteds.length > 0 ? (
             wanteds.map((wanted) => (
@@ -112,8 +124,9 @@ function AvisDrecherche() {
                   icon={faXmarkCircle}
                   onClick={() => deleteWanted(wanted.urlImage, wanted._id)}
                 />
+                {/* ✅ CORRECTION : Utiliser la fonction getImageUrl */}
                 <img
-                  src={`https://marli-backend.onrender.com/${wanted.urlImage}`}
+                  src={getImageUrl(wanted.urlImage)}
                   alt='imag-avis'
                 />
               </div>
