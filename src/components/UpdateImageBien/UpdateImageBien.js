@@ -140,7 +140,7 @@ function UpdateImageBien({ bienData, index, reference }) {
     try {
       const tokenLog = Cookies.get('_marli_tk_log')
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/bien/medias/${imageURL ? imageURL : imagePreview.split(`${process.env.REACT_APP_URL_BASE_IMAGE}`)[1]}?index=${index}&ref=${reference}`,
+        `${process.env.REACT_APP_API_URL}/bien/medias/${encodeURIComponent(imageURL || imagePreview)}?index=${index}&ref=${reference}`,
         {
           method: 'DELETE',
           headers: {
