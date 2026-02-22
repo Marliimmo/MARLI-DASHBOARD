@@ -21,7 +21,6 @@ function UpdateImageBien({ bienData, index, reference }) {
 
   const [confirmationContainer, setConfirmationContainer] = useState(false)
 
-  // Confirmation de la suppression de la photo
   const ShowConfirmationContainer = (e) => {
     e.preventDefault()
     setConfirmationContainer(!confirmationContainer)
@@ -41,7 +40,6 @@ function UpdateImageBien({ bienData, index, reference }) {
 
   useEffect(() => {
     if (!newModif) {
-      //Valeur par defaut de l'image
       if (
         imageURL !== '' &&
         imageURL !== undefined &&
@@ -54,47 +52,21 @@ function UpdateImageBien({ bienData, index, reference }) {
     }
 
     if (newModif) {
-      // Modification de la photo
       async function fetchImage() {
         if (selectedImage) {
           setLoading(true)
           
-          // ✅ COLLECTER TOUTES LES IMAGES EXISTANTES
-          const existingImages = []
-          if (bienData?._medias) {
-            let i = 0
-            while (bienData._medias[`image_galerie_${i}`]) {
-              existingImages.push(bienData._medias[`image_galerie_${i}`].url)
-              i++
-            }
-          }
-          
-          // ✅ CRÉER UN ARRAY TEMPORAIRE POUR PLACER LA NOUVELLE IMAGE AU BON INDEX
-          const tempImages = [...existingImages]
-          
           const formData = new FormData()
-          
-          // Si on remplace une image existante
-          if (index < tempImages.length) {
-            // On garde toutes les images SAUF celle qu'on remplace
-            tempImages.splice(index, 1)
-          }
-          
-          // ✅ ENVOYER LES IMAGES EXISTANTES (sans celle remplacée)
-          formData.append('existingImages', JSON.stringify(tempImages))
-          
-          // ✅ AJOUTER LA NOUVELLE IMAGE (elle sera ajoutée à la fin par le backend)
-          formData.append('images', selectedImage)
-          
-          // ✅ AJOUTER LA RÉFÉRENCE
+          formData.append('image', selectedImage)
+          formData.append('nomDeLaPropiete', `_medias.image_galerie_${index}`)
           formData.append('reference', reference)
           
           try {
             const tokenLog = Cookies.get('_marli_tk_log')
             const response = await fetch(
-              `${process.env.REACT_APP_API_URL}/bien/update-multiple-images`,
+              `${process.env.REACT_APP_API_URL}/bien/update-image-unique`,
               {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                   Authorization: `Bearer ${tokenLog}`,
                 },
@@ -104,16 +76,13 @@ function UpdateImageBien({ bienData, index, reference }) {
             if (response.ok) {
               setTimeout(async () => {
                 const result = await response.json()
-                // La nouvelle image est à la position index dans le résultat
-                const newImageUrl = result.images?.[index] || result.images?.[result.images.length - 1]
-                setImagePreview(newImageUrl)
+                setImagePreview(result.result)
                 setLoading(false)
                 setDeleteButton(true)
                 setNewModif(false)
                 setModifAuthorize(true)
                 setCallBackMessage('flex')
                 setMessageFecth('Image modifiée avec succès.')
-
                 resetFeedBack()
               }, 1000)
             } else {
@@ -121,10 +90,7 @@ function UpdateImageBien({ bienData, index, reference }) {
                 setLoading(false)
                 setModifAuthorize('error')
                 setCallBackMessage('flex')
-                setMessageFecth(
-                  "Oups, une erreur s'est produite, veuillez réessayer plustard.",
-                )
-
+                setMessageFecth("Oups, une erreur s'est produite, veuillez réessayer plustard.")
                 resetFeedBack()
               }, 1000)
             }
@@ -132,11 +98,8 @@ function UpdateImageBien({ bienData, index, reference }) {
             setLoading(false)
             setModifAuthorize('error')
             setCallBackMessage('flex')
-            setMessageFecth(
-              "Oups, une erreur s'est produite, veuillez réessayer plustard.",
-            )
+            setMessageFecth("Oups, une erreur s'est produite, veuillez réessayer plustard.")
             console.error('Erreur lors de la requête fetch :', error)
-
             resetFeedBack()
           }
         }
@@ -150,18 +113,9 @@ function UpdateImageBien({ bienData, index, reference }) {
     const tailleMaxAutorisee = 5 * 1024 * 1024
 
     if (selectedFile) {
-      const allowedFormats = [
-        'image/jpeg',
-        'image/jpg',
-        'image/png',
-        'image/webp',
-        'image/svg+xml',
-      ]
+      const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml']
 
-      if (
-        allowedFormats.includes(selectedFile.type) &&
-        selectedFile.size <= tailleMaxAutorisee
-      ) {
+      if (allowedFormats.includes(selectedFile.type) && selectedFile.size <= tailleMaxAutorisee) {
         const reader = new FileReader()
         reader.onload = () => {
           setSelectedImage(selectedFile)
@@ -173,20 +127,15 @@ function UpdateImageBien({ bienData, index, reference }) {
       } else {
         setModifAuthorize('error')
         setCallBackMessage('flex')
-        setMessageFecth(
-          'Erreur, vérifier le format et la taille de votre image et réessayer.',
-        )
+        setMessageFecth('Erreur, vérifier le format et la taille de votre image et réessayer.')
         e.target.value = ''
-
         resetFeedBack()
       }
     }
   }
 
-  //Suppression de l'image
   const deletePhoto = async () => {
     resetFeedBack()
-
     setLoading(true)
     try {
       const tokenLog = Cookies.get('_marli_tk_log')
@@ -208,7 +157,6 @@ function UpdateImageBien({ bienData, index, reference }) {
           setModifAuthorize(true)
           setCallBackMessage('flex')
           setMessageFecth('Image supprimée avec succès.')
-
           resetFeedBack()
         }, 1000)
       } else {
@@ -216,10 +164,7 @@ function UpdateImageBien({ bienData, index, reference }) {
           setLoading(false)
           setModifAuthorize('error')
           setCallBackMessage('flex')
-          setMessageFecth(
-            "Oups, une erreur s'est produite, veuillez réessayer plustard.",
-          )
-
+          setMessageFecth("Oups, une erreur s'est produite, veuillez réessayer plustard.")
           resetFeedBack()
         }, 1000)
       }
@@ -227,11 +172,8 @@ function UpdateImageBien({ bienData, index, reference }) {
       setLoading(false)
       setModifAuthorize('error')
       setCallBackMessage('flex')
-      setMessageFecth(
-        "Oups, une erreur s'est produite, veuillez réessayer plustard.",
-      )
+      setMessageFecth("Oups, une erreur s'est produite, veuillez réessayer plustard.")
       console.error('Erreur lors de la requête fetch :', error)
-
       resetFeedBack()
     }
   }
@@ -260,9 +202,7 @@ function UpdateImageBien({ bienData, index, reference }) {
               icon={faXmarkCircle}
               title="Supprimer l'image"
             />
-          ) : (
-            ''
-          )}
+          ) : ''}
           <input
             id={`imageGalerie${index}`}
             type='file'
