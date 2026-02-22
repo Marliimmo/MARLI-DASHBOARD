@@ -58,14 +58,43 @@ function UpdateImageBien({ bienData, index, reference }) {
       async function fetchImage() {
         if (selectedImage) {
           setLoading(true)
+          
+          // ✅ COLLECTER TOUTES LES IMAGES EXISTANTES
+          const existingImages = []
+          if (bienData?._medias) {
+            let i = 0
+            while (bienData._medias[`image_galerie_${i}`]) {
+              existingImages.push(bienData._medias[`image_galerie_${i}`].url)
+              i++
+            }
+          }
+          
+          // ✅ CRÉER UN ARRAY TEMPORAIRE POUR PLACER LA NOUVELLE IMAGE AU BON INDEX
+          const tempImages = [...existingImages]
+          
           const formData = new FormData()
-          formData.append('image', selectedImage)
+          
+          // Si on remplace une image existante
+          if (index < tempImages.length) {
+            // On garde toutes les images SAUF celle qu'on remplace
+            tempImages.splice(index, 1)
+          }
+          
+          // ✅ ENVOYER LES IMAGES EXISTANTES (sans celle remplacée)
+          formData.append('existingImages', JSON.stringify(tempImages))
+          
+          // ✅ AJOUTER LA NOUVELLE IMAGE (elle sera ajoutée à la fin par le backend)
+          formData.append('images', selectedImage)
+          
+          // ✅ AJOUTER LA RÉFÉRENCE
+          formData.append('reference', reference)
+          
           try {
             const tokenLog = Cookies.get('_marli_tk_log')
             const response = await fetch(
-              `${process.env.REACT_APP_API_URL}/bien/update-image?index=${index}&ref=${reference}`,
+              `${process.env.REACT_APP_API_URL}/bien/update-multiple-images`,
               {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                   Authorization: `Bearer ${tokenLog}`,
                 },
@@ -75,12 +104,12 @@ function UpdateImageBien({ bienData, index, reference }) {
             if (response.ok) {
               setTimeout(async () => {
                 const result = await response.json()
-                setImagePreview(
-                  result.imagePath,
-                )
+                // La nouvelle image est à la position index dans le résultat
+                const newImageUrl = result.images?.[index] || result.images?.[result.images.length - 1]
+                setImagePreview(newImageUrl)
                 setLoading(false)
                 setDeleteButton(true)
-                setNewModif(true)
+                setNewModif(false)
                 setModifAuthorize(true)
                 setCallBackMessage('flex')
                 setMessageFecth('Image modifiée avec succès.')
@@ -114,7 +143,7 @@ function UpdateImageBien({ bienData, index, reference }) {
       }
       fetchImage()
     }
-  }, [selectedImage, imageURL, newModif, index, reference])
+  }, [selectedImage, imageURL, newModif, index, reference, bienData])
 
   const handleImageChange = async (e) => {
     const selectedFile = e.target.files[0]
