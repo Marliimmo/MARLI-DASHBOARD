@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styles from './DragDropImages.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCamera, faXmarkCircle, faGripVertical, faSave } from '@fortawesome/free-solid-svg-icons'
@@ -18,160 +18,101 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
   const [hasChanges, setHasChanges] = useState(false)
   const API_URL = process.env.REACT_APP_API_URL || 'https://marli-backend.onrender.com'
 
-  useEffect(() => {
-    if (reference) {
-      loadExistingImages()
-    }
-  }, [reference])
-
-  const loadExistingImages = async () => {
+  const loadExistingImages = useCallback(async () => {
     setLoading(true)
     try {
       const response = await fetch(`${API_URL}/bien/get-one?ref=${reference}`)
       if (response.ok) {
         const data = await response.json()
-        console.log('Données bien chargées:', data)
-        
         if (data._medias) {
           const imageUrls = []
           Object.keys(data._medias)
             .filter(key => key.startsWith('image_galerie_'))
-            .sort((a, b) => {
-              const numA = parseInt(a.replace('image_galerie_', ''))
-              const numB = parseInt(b.replace('image_galerie_', ''))
-              return numA - numB
-            })
+            .sort((a, b) => parseInt(a.replace('image_galerie_', '')) - parseInt(b.replace('image_galerie_', '')))
             .forEach(key => {
               const imageData = data._medias[key]
               let imageUrl = null
-              
-              if (typeof imageData === 'string') {
-                imageUrl = imageData
-              } else if (imageData && imageData.url) {
-                imageUrl = imageData.url
-              }
-              
+              if (typeof imageData === 'string') imageUrl = imageData
+              else if (imageData && imageData.url) imageUrl = imageData.url
               if (imageUrl) {
-                // Si c'est une URL Cloudinary, on la garde telle quelle
                 if (!imageUrl.startsWith('http')) {
                   const cleanUrl = imageUrl.replace('imagesBienMarli/', '')
                   imageUrl = `${API_URL}/bien/images/imagesBienMarli/${cleanUrl}`
                 }
-                
-                imageUrls.push({
-                  url: imageUrl,
-                  existing: true,
-                  isCloudinary: imageUrl.includes('cloudinary.com'),
-                  id: key
-                })
+                imageUrls.push({ url: imageUrl, existing: true, isCloudinary: imageUrl.includes('cloudinary.com'), id: key })
               }
             })
           setImages(imageUrls)
         }
-      } else {
-        console.error('Erreur lors du chargement:', response.status)
-        setModifAuthorize(false)
-        setCallBackMessage(true)
-        setMessageFecth('Erreur lors du chargement des images.')
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des images:', error)
-      setModifAuthorize(false)
-      setCallBackMessage(true)
-      setMessageFecth('Erreur réseau.')
+      console.error('Erreur chargement images:', error)
     } finally {
       setLoading(false)
     }
-  }
+  }, [API_URL, reference])
+
+  useEffect(() => {
+    if (reference) loadExistingImages()
+  }, [reference, loadExistingImages])
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files)
-    const fileObjects = files.map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-      existing: false,
-      isCloudinary: false
-    }))
-    setImages([...images, ...fileObjects])
+    const fileObjects = files.map((file) => ({ file, url: URL.createObjectURL(file), existing: false, isCloudinary: false }))
+    setImages(prev => [...prev, ...fileObjects])
     setHasChanges(true)
   }
 
-  const handleSave = async () => {
-    if (!hasChanges) {
-      setModifAuthorize(true)
-      setCallBackMessage(true)
-      setMessageFecth('Aucune modification à enregistrer.')
-      setTimeout(() => setCallBackMessage(false), 3000)
-      return
-    }
-
+  const saveImages = async (imageList) => {
     setLoading(true)
     try {
       const token = Cookies.get('_marli_tk_log')
       const formData = new FormData()
-      
-      // Séparer les images existantes (Cloudinary) des nouvelles à uploader
-      const existingCloudinaryUrls = []
-      const newFiles = []
-      
-      images.forEach((img) => {
+      formData.append('reference', reference)
+
+      const keepUrls = []
+      imageList.forEach((img) => {
         if (img.existing && img.isCloudinary) {
-          // Image déjà sur Cloudinary : on garde juste l'URL
-          existingCloudinaryUrls.push(img.url)
+          keepUrls.push(img.url)
         } else if (img.file) {
-          // Nouvelle image : on l'ajoute au FormData pour upload
-          newFiles.push(img.file)
+          formData.append('images', img.file)
         }
       })
-      
-      // Ajouter les URLs Cloudinary existantes
-      
-      // Ajouter les nouvelles images à uploader
-      newFiles.forEach((file) => {
-        formData.append('images', file)
-      })
-      
-      // Ajouter la référence
-      formData.append('reference', reference)
-      
-      // Utiliser /update-multiple-images au lieu de /update-image
+
+      formData.append('keepUrls', JSON.stringify(keepUrls))
+
       const response = await fetch(`${API_URL}/bien/update-multiple-images`, {
         method: 'POST',
-        headers: { 
-          'Authorization': `Bearer ${token}`
-          // Pas de Content-Type : le navigateur le gère automatiquement avec FormData
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
         body: formData
       })
-      
+
       if (response.ok) {
         setModifAuthorize(true)
         setCallBackMessage(true)
         setMessageFecth('Images enregistrées avec succès !')
         setHasChanges(false)
-        
-        // Recharger les images pour avoir les nouvelles URLs Cloudinary
         await loadExistingImages()
-        
         if (onUpdate) onUpdate()
-        
-        setTimeout(() => {
-          setCallBackMessage(false)
-        }, 2000)
+        setTimeout(() => setCallBackMessage(false), 2000)
       } else {
-        const errorData = await response.json()
-        throw new Error(errorData.message || 'Erreur lors de la sauvegarde')
+        const err = await response.json()
+        setModifAuthorize(false)
+        setCallBackMessage(true)
+        setMessageFecth(err.message || 'Erreur serveur')
+        setTimeout(() => setCallBackMessage(false), 3000)
       }
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde:', error)
       setModifAuthorize(false)
       setCallBackMessage(true)
-      setMessageFecth(`Erreur: ${error.message}`)
+      setMessageFecth('Erreur réseau')
       setTimeout(() => setCallBackMessage(false), 3000)
     } finally {
       setLoading(false)
     }
   }
+
+  const handleSave = () => saveImages(images)
 
   const handleDragStart = (e, index) => {
     e.dataTransfer.effectAllowed = 'move'
@@ -182,7 +123,6 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
     e.preventDefault()
     const dragIndex = parseInt(e.dataTransfer.getData('text/html'))
     if (dragIndex === dropIndex) return
-
     const newImages = [...images]
     const draggedImage = newImages[dragIndex]
     newImages.splice(dragIndex, 1)
@@ -196,13 +136,12 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
     setConfirmationContainer(true)
   }
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (imageToDelete !== null) {
       const newImages = images.filter((_, i) => i !== imageToDelete)
-      setImages(newImages)
-      setHasChanges(true)
       setImageToDelete(null)
       setConfirmationContainer(false)
+      await saveImages(newImages)
     }
   }
 
@@ -227,14 +166,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
           <FontAwesomeIcon icon={faCamera} />
           <span>Ajouter des images</span>
         </label>
-        <input
-          id="file-upload"
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleFileChange}
-          className={styles.fileInput}
-        />
+        <input id="file-upload" type="file" multiple accept="image/*" onChange={handleFileChange} className={styles.fileInput} />
         {hasChanges && (
           <button onClick={handleSave} className={styles.saveButton}>
             <FontAwesomeIcon icon={faSave} />
@@ -256,11 +188,7 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
               onDragOver={(e) => e.preventDefault()}
             >
               <img src={img.url} alt={`upload-${index}`} />
-              <button
-                onClick={() => handleDeleteClick(index)}
-                className={styles.deleteButton}
-                type="button"
-              >
+              <button onClick={() => handleDeleteClick(index)} className={styles.deleteButton} type="button">
                 <FontAwesomeIcon icon={faXmarkCircle} />
               </button>
               <span className={styles.dragHandle}>
