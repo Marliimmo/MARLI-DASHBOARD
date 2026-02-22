@@ -125,7 +125,6 @@ const DragDropImages = ({ bienId, reference, modifAuthorizeValue, callBackMessag
       })
       
       // Ajouter les URLs Cloudinary existantes
-      formData.append('existingImages', JSON.stringify(existingCloudinaryUrls))
       
       // Ajouter les nouvelles images à uploader
       newFiles.forEach((file) => {
