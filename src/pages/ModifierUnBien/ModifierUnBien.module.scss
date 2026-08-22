@@ -17,6 +17,17 @@
     font-size: 30px;
     text-align: center;
   }
+
+  .SectionVideo {
+    padding: 0px 0 30px 0;
+    max-width: 500px;
+
+    .videoHint {
+      font-size: 14px;
+      color: gray;
+      margin-bottom: 15px;
+    }
+  }
   
   .SectionImage {
     padding: 0px 0 30px 0;

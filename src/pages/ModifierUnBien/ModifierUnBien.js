@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './ModifierUnBien.module.scss'
 import FormCreateOrEditBien from '../../components/FormCreateOrEditBien/FormCreateOrEditBien'
 import DragDropImages from '../../components/DragDropImages/DragDropImages'
+import UpdateVideoBien from '../../components/UpdateVideoBien/UpdateVideoBien'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -51,6 +52,12 @@ function ModifierUnBien() {
               reference={reference}
               onUpdate={() => setReload(!reload)}
             />
+
+            <div className={styles.SectionVideo}>
+              <h3>Section vidéo</h3>
+              <p className={styles.videoHint}>Vidéo de présentation du bien (facultatif)</p>
+              <UpdateVideoBien bienData={data} reference={reference} />
+            </div>
           </>
         )}
       </div>

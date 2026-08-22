@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './CreerUnBien.module.scss'
 import FormCreateOrEditBien from '../../components/FormCreateOrEditBien/FormCreateOrEditBien'
 import UpdateImageBien from '../../components/UpdateImageBien/UpdateImageBien'
+import UpdateVideoBien from '../../components/UpdateVideoBien/UpdateVideoBien'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet'
 
@@ -126,6 +127,12 @@ function CreateOrEditBien() {
                   <UpdateImageBien reference={reference} index='30' />
                 </div>
               </div>
+            </div>
+
+            <div className={styles.SectionVideo}>
+              <h3>Section vidéo</h3>
+              <p className={styles.videoHint}>Vidéo de présentation du bien (facultatif)</p>
+              <UpdateVideoBien reference={reference} />
             </div>
           </div>
         )}
