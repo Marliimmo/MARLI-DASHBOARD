@@ -33,3 +33,23 @@
         }
     }
 }
+
+// Ajout d'un avis par l'administratrice
+.addZone {
+  padding: 10px 30px 0 22%;
+  .addButton {
+    color: #fff; background: green; border: 0; border-radius: 100px;
+    padding: 12px 24px; font-size: 16px; cursor: pointer;
+  }
+  .addForm {
+    display: flex; flex-direction: column; gap: 8px; max-width: 520px;
+    background: #2a2a2a; padding: 20px; border-radius: 10px; color: #fff;
+    input, select, textarea { padding: 10px; border-radius: 6px; border: 1px solid #555; background: #1E1E1E; color: #fff; font-size: 15px; }
+    .checkbox { display: flex; align-items: center; gap: 8px; margin-top: 6px; input { width: auto; } }
+    .formActions { display: flex; gap: 10px; margin-top: 10px;
+      button { border: 0; border-radius: 100px; padding: 10px 20px; cursor: pointer; font-size: 15px; }
+      button[type='submit'] { background: green; color: #fff; }
+    }
+    .formMessage { margin: 6px 0 0; color: #f0c040; }
+  }
+}
