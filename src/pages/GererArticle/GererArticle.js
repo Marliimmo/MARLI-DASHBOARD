@@ -17,6 +17,11 @@ function GererArticle() {
   const [excerpt, setExcerpt] = useState('')
   const [content, setContent] = useState('')
   const [urlImage, setUrlImage] = useState('')
+  // Publication automatique sur le site : l'article apparaît dans l'heure qui suit sa date
+  const today = new Date().toISOString().slice(0, 10)
+  const [datePublication, setDatePublication] = useState(today)
+  const [categorie, setCategorie] = useState('')
+  const [motsCles, setMotsCles] = useState('')
   const [imageFile, setImageFile] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   
@@ -46,6 +51,11 @@ function GererArticle() {
           setExcerpt(article.excerpt)
           setContent(article.content)
           setUrlImage(article.urlImage)
+          setDatePublication(
+            (article.datePublication || article.createdAt || '').slice(0, 10) || today,
+          )
+          setCategorie(article.categorie || '')
+          setMotsCles(article.motsCles || '')
           setImagePreview(article.urlImage)
         }
       }
@@ -133,7 +143,11 @@ function GererArticle() {
           title,
           excerpt,
           content,
-          urlImage: finalImageUrl
+          urlImage: finalImageUrl,
+          // midi (heure de Paris) pour éviter tout décalage de jour lié au fuseau horaire
+          datePublication: `${datePublication}T12:00:00+02:00`,
+          categorie,
+          motsCles,
         })
       })
 
@@ -214,7 +228,47 @@ function GererArticle() {
           </div>
 
           <div className={styles.formGroup}>
+            <label htmlFor="datePublication">Date de publication sur le site *</label>
+            <input
+              type="date"
+              id="datePublication"
+              value={datePublication}
+              onChange={(e) => setDatePublication(e.target.value)}
+              required
+            />
+            <small style={{ display: 'block', marginTop: 6, color: '#777' }}>
+              L'article est mis en ligne automatiquement dans l'heure qui suit cette date
+              (aujourd'hui = dans l'heure). Une date future le programme.
+            </small>
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="categorie">Catégorie (affichée au-dessus du titre)</label>
+            <input
+              type="text"
+              id="categorie"
+              value={categorie}
+              onChange={(e) => setCategorie(e.target.value)}
+              placeholder="Ex : Vendre · Conseil · Besançon"
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="motsCles">Mots-clés SEO (séparés par des virgules)</label>
+            <input
+              type="text"
+              id="motsCles"
+              value={motsCles}
+              onChange={(e) => setMotsCles(e.target.value)}
+              placeholder="Ex : vendre à Besançon, estimation immobilière Besançon"
+            />
+          </div>
+          <div className={styles.formGroup}>
             <label htmlFor="content">Contenu *</label>
+            <small style={{ display: 'block', marginBottom: 6, color: '#777' }}>
+              Mise en forme : « ## Titre » pour un titre de section, « ### Sous-titre »,
+              **texte** pour le gras, « - » en début de ligne pour une liste. Une ligne vide
+              sépare deux paragraphes. Une section « ## Questions fréquentes » suivie de
+              « ### question » génère la FAQ pour Google.
+            </small>
             <textarea
               id="content"
               value={content}

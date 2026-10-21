@@ -60,6 +60,7 @@ function Connexion() {
           Cookies.set('_marli_tk_log', user.token, {
             expires: 1,
             sameSite: 'Strict',
+            secure: window.location.protocol === 'https:',
           })
           navigate(`/tous-les-biens`)
         }, 1000)

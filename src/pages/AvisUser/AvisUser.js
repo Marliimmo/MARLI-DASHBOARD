@@ -39,8 +39,10 @@ function AvisUser() {
   useEffect(() => {
     try {
       const fectData = async () => {
+        const token = Cookies.get('_marli_tk_log')
         const response = await fetch(
           `${process.env.REACT_APP_API_URL}/user/reviews?allreviews=true`,
+          { headers: { Authorization: `Bearer ${token}` } },
         )
         if (response.ok) {
           const result = await response.json()

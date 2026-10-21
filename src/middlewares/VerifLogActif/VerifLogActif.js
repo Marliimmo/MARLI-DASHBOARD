@@ -12,7 +12,7 @@ const VerifLogActif = ({ children }) => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_API_URL}/user/tk_log`,
+            `${process.env.REACT_APP_API_URL}/user/tk-log`,
             {
               method: 'GET',
               headers: {

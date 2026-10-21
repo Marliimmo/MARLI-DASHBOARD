@@ -145,7 +145,9 @@ function MesArticles() {
                   <p className={styles.excerpt}>{article.excerpt}</p>
                   <div className={styles.articleMeta}>
                     <span className={styles.date}>
-                      Créé le {formatDate(article.createdAt)}
+                      {new Date(article.datePublication || article.createdAt) > new Date()
+                        ? `Programmé pour le ${formatDate(article.datePublication)}`
+                        : `Publié le ${formatDate(article.datePublication || article.createdAt)}`}
                     </span>
                     {article.updatedAt !== article.createdAt && (
                       <span className={styles.updated}>
