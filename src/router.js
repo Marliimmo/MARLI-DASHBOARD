@@ -6,6 +6,7 @@ import Connexion from './pages/connexion/connexion'
 import CreateBien from './pages/CreerUnBien/CreerUnBien'
 import ModifierUnBien from './pages/ModifierUnBien/ModifierUnBien'
 import AvisUser from './pages/AvisUser/AvisUser'
+import Messages from './pages/Messages/Messages'
 import AvisDrecherche from './pages/AvisDrecherche/AvisDrecherche'
 import Dashboard from './pages/Dashboard/Dashboard'
 import MesArticles from './pages/MesArticles/MesArticles' // ✅ NOUVEAU
@@ -55,6 +56,14 @@ export const router = createBrowserRouter([
         element: (
           <AuthRequired>
             <ModifierUnBien />
+          </AuthRequired>
+        ),
+      },
+      {
+        path: '/messages',
+        element: (
+          <AuthRequired>
+            <Messages />
           </AuthRequired>
         ),
       },

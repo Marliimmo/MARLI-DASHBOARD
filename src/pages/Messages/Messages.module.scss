@@ -1,0 +1,27 @@
+.container {
+  padding: 20px 30px 60px 22%;
+  color: #fff;
+  .badge { margin-left: 10px; font-size: 14px; background: green; border-radius: 100px; padding: 3px 12px; vertical-align: middle; }
+  .filtres { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 20px;
+    button { background: #2a2a2a; color: #fff; border: 1px solid #555; border-radius: 100px; padding: 8px 16px; cursor: pointer; }
+    .actif { background: #fff; color: #000; }
+  }
+  .info { color: #bbb; }
+  .carte { background: #2a2a2a; border-left: 4px solid green; border-radius: 8px; padding: 18px 22px; margin-bottom: 16px; max-width: 820px;
+    h3 { margin: 8px 0 4px; }
+    a { color: #9fd3ff; }
+  }
+  .lu { border-left-color: #555; opacity: 0.75; }
+  .entete { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; font-size: 13px; }
+  .type { text-transform: uppercase; letter-spacing: 1px; }
+  .date { color: #aaa; }
+  .alerte { background: #8a5a00; border-radius: 4px; padding: 2px 8px; }
+  .contact { margin: 0 0 8px; }
+  .details { margin: 6px 0; padding-left: 18px; color: #ddd; }
+  .contenu { white-space: pre-line; background: #1e1e1e; padding: 12px; border-radius: 6px; }
+  .actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;
+    button, .repondre { background: #fff; color: #000; border: 0; border-radius: 100px; padding: 8px 16px; cursor: pointer; font-size: 14px; text-decoration: none; }
+    .supprimer { background: #a33; color: #fff; }
+  }
+}
+@media (max-width: 900px) { .container { padding: 20px 16px 60px; } }

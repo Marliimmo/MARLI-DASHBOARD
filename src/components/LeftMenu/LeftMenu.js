@@ -8,6 +8,7 @@ import {
   faRightFromBracket,
   faSearch,
   faStar,
+  faEnvelope,
   faNewspaper, // ✅ NOUVELLE ICÔNE
 } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
@@ -73,6 +74,18 @@ function LeftMenu() {
               <div>
                 <FontAwesomeIcon icon={faHome} />
                 <span className={styles.menuTitle}>Tous les biens</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? `link_active` : 'link_menu'
+              }
+              to='/messages/'
+            >
+              <div>
+                <FontAwesomeIcon icon={faEnvelope} />
+                <span className={styles.menuTitle}>Messages</span>
               </div>
             </NavLink>
 
